@@ -8,6 +8,8 @@
  */
 
 var fileModelPass = "[Password Here]";
+var loginModelPass = "password";
 exports.fileModelPass = fileModelPass;
+exports.loginModelPass = loginModelPass;
 
 // [More passwords go here]
