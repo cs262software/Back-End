@@ -5,68 +5,59 @@
 'use strict';
 
 // Initialize globals
-var accountModel = require('../models/accountModel.js')
+var accountModel = require('../models/accountModel.js');
+var bcrypt = require('bcrypt-nodejs');
+
+/*
+ * validateAccount returns the UserID if the user credentials are correct
+ *
+ * @param: req.query.username, the username
+ * @param: req.query.password, the pasword
+ *
+ * @return: The UserID
+ */
 
 exports.validateAccount = function(req, res) {
-    var accountMock1 = {
-        id: 1,
-        username: "jesseboi",
-        password: "1234"
-    }
-
-    var accountMock2 = {
-        id: 2,
-        username: "jackbeanstalk",
-        password: "iluvgold"
-    }
-
-    var accountMock3 = {
-        id: 3,
-        username: "spongebobsquarepants",
-        password: "imready500"
-    }
-
-    var accounts = [accountMock1, accountMock2, accountMock3]
-
     var username = req.query.username;
     var password = req.query.password;
 
-    // to check multiple accounts
-    for (var i = 0; i < 3; i++) {
-        if (accounts[i].username === username && accounts[i].password === password) {
-            return res.send({"id": accounts[i].id});
-        }
+    if (!username || !password) {
+        res.send({"status": "error", "message": "missing username or password"});
+    } else {
+        accountModel.getPassword(username, function(hash, uid) {
+            if (hash === "-1" || uid === "-1") {
+                res.send({"status": "error", "message": "incorrect username or password"});
+            }
+            if (bcrypt.compareSync(password, hash)) res.send({"userID": uid});
+            else {
+                res.send({"status": "error", "message": "incorrect username or password"});
+            }
+        });
     }
-    return res.send({"status": "error", "message": "missing username or password"});
-
-    // to check a single account
-    // if(!username || !password) {
-    //     return res.send({"status": "error", "message": "missing username or password"});
-    // } else if(username != accountMock.username || password != accountMock.password) {
-    //     return res.send({"status": "error", "message": "wrong username or password"});
-    // } else {
-    //     return res.send({"id": accountMock.id});
-    // }
 }
+
+/*
+ * createAccount creates a new account, with a username and password, in the database
+ *
+ * @param: req.query.username, the new username
+ * @param: req.query.password, the new pasword
+ *
+ * @return: The new UserID
+ */
 
 exports.createAccount = function(req, res) {
     var username = req.query.username;
     var password = req.query.password;
 
     if (!username || !password) {
-        return res.send({"status": "error", "message": "missing a parameter"});
+        res.send({"status": "error", "message": "missing a parameter"});
     } else {
-        // var newUser = {
-        //     id: 0,
-        //     username: u,
-        //     password: p
-        // }
+        // Password is automatically salted when it is hashed
+        var hash = bcrypt.hashSync(password);
 
-        // return res.send(newUser);
-
-        accountModel.createUser(u, p);
-
-
+        accountModel.createUser(username, hash, function(uid) {
+            res.send({"userID": uid});
+        });
     }
 
 }

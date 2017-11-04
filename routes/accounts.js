@@ -1,3 +1,7 @@
+/*
+ * accounts.js Maintains the file system routing information
+ */
+
 'use strict';
 
 var express = require( 'express' );
