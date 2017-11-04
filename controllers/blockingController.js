@@ -5,7 +5,7 @@
 'use strict';
 
 // Initialize globals
-//var fileModel = require('../models/blockingController.js')
+var fileModel = require('../models/blockingController.js')
 
 
 /*
