@@ -50,10 +50,10 @@ exports.validateAccount = function(req, res) {
 }
 
 exports.createAccount = function(req, res) {
-    var u = req.query.username;
-    var p = req.query.password;
+    var username = req.query.username;
+    var password = req.query.password;
 
-    if (!u || !p) {
+    if (!username || !password) {
         return res.send({"status": "error", "message": "missing a parameter"});
     } else {
         // var newUser = {
@@ -63,6 +63,9 @@ exports.createAccount = function(req, res) {
         // }
 
         // return res.send(newUser);
+
+        accountModel.createUser(u, p);
+
 
     }
 

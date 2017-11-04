@@ -13,7 +13,8 @@ var conn  = mysql.createConnection( {
 
 exports.readUser = function(username, password) {
 	db.connectDB( conn );
-	var sql = "SELECT UserID FROM theatreappsuite.user WHERE UserName = ?";
+	var sql = "SELECT `UserID` FROM `theatreappsuite`.`user` WHERE `UserName` = \"?\"";
+	var inserts = [username];
 	sql = mysql.format( sql, inserts );
 	db.query( conn, sql, function( res ) {
 	  var uid = res[0].UserID;
@@ -21,5 +22,16 @@ exports.readUser = function(username, password) {
 	} );
 }
 
+exports.createUser = function(username, password) {
+	db.connectDB( conn );
+	var sql = "INSERT INTO `theatreappsuite`.`user` (`UserName`, `Password`) VALUES (?, ?);"
+	var inserts = [username, password];
+	sql = mysql.format( sql, inserts );
 
 
+	// return the ID
+	var sql = "SELECT `UserID` FROM `theatreappsuite`.`user` WHERE `UserName` = \"?\"";
+	var inserts = [username];
+	sql = mysql.format(sql, inserts);
+
+}
