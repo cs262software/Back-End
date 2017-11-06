@@ -5,8 +5,33 @@
 'use strict';
 
 // Initialize globals
-var loginModel = require('../models/loginModel.js')
-//var fs = require( "fs" );
+var bcrypt = require('bcrypt-nodejs');
+var loginModel = require('../models/loginModel');
+
+/*
+ * createAccount creates a new account, with a username and password, in the database
+ *
+ * @param: req.query.username, the new username
+ * @param: req.query.password, the new pasword
+ *
+ * @return: The new UserID
+ */
+
+exports.createLogin = function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    if (!username || !password) {
+        res.status(400).send({ error: "Missing username or password field."});
+    } else {
+        // Password is automatically salted when it is hashed
+        var hash = bcrypt.hashSync(password);
+
+        loginModel.createUser(username, hash, function(uid) {
+            res.send({"userId": uid});
+        });
+    }
+}
 
 /*
  * postLogin returns the a user id if the credentials are found.
@@ -18,9 +43,25 @@ var loginModel = require('../models/loginModel.js')
  */
 
 exports.postLogin = function( req, res ) {
-    let userName = req.body.username;
-    let password = req.body.password;
-    loginModel.postLogin( userName, password, function( userId ) {
-        res.send({ userId: userId });
-    });
+    var username = req.body.username;
+    var password = req.body.password;
+
+    if (!username || !password) {
+        res.status(400).json({ message: "Username or password was empty." });
+    }
+    else {
+        loginModel.getPassword(username, function(hash, uid) {
+            if (hash == "-1" && uid == "-1") {
+                res.status(400).json({ message: "Invalid username or password." });
+            }
+            else {
+                if (bcrypt.compareSync(password, hash)) {
+                    res.json({ userId: uid });
+                }
+                else {
+                    res.status(400).json({ message: "Invalid username or password." });
+                }
+            }
+        });
+    }
 }
