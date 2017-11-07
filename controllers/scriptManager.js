@@ -27,3 +27,13 @@ exports.getScript = function( req, res ) {
 	res.send(getScript(req.id));
    
 }
+
+function getScriptList () {
+	
+	return scriptList;
+}
+
+exports.getScriptList = function(res ) {
+	
+	res.send(getScriptList());
+}
