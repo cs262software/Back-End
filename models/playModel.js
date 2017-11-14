@@ -1,0 +1,34 @@
+/**
+ * playModel.js contains the play-related functions that interact with the DB
+ */
+
+'use strict';
+
+var mysql = require( 'mysql' );
+var db = require( './dbModule' );
+var modelPass = require( './modelPasswords' );
+var conn  = mysql.createConnection( {
+	host     : 'localhost',
+	user     : 'theatreSuiteUser',
+	password : modelPass.theatreSuiteUserPass,
+	database : 'theatreappsuite',
+});
+
+/**
+ * getLines gets the lines and ids from a play given playID, actNum, and sceneNum
+ *
+ * @param: playID
+ * @param: actNum
+ * @param: sceneNum
+ * @param: callback (function)
+ *
+ * @return: list of lines and ids and notes
+ */
+exports.getLines = function(playID, actNum, sceneNum, callback) {
+	var sql = "SELECT LineID, LineNum, Text FROM line WHERE PlayID = ? AND ActNum = ? AND SceneNum = ?";
+	var inserts = [playID, actNum, sceneNum];
+	sql = mysql.format(sql, inserts);
+	db.queryDB(conn, sql, function(res) {
+		callback(res);
+	});
+}

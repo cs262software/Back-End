@@ -10,4 +10,5 @@
 var fileModelPass = "[Password Here]";
 exports.fileModelPass = fileModelPass;
 
-// [More passwords go here]
+var playModelPass = "[Password Here]";
+exports.playModelPass = playModelPass;
