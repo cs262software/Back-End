@@ -11,6 +11,8 @@ var files = require('./routes/files');
 var roles = require('./routes/roles');
 var scripts = require('./routes/scripts');
 var accounts = require('./routes/accounts');
+var acts = require('./routes/acts');
+var scenes = require('./routes/scenes');
 
 var app = express();
 
@@ -33,6 +35,8 @@ app.use('/files', files);
 app.use('/roles', roles);
 app.use('/scripts', scripts);
 app.use('/accounts', accounts);
+app.use('/acts', acts);
+app.use('/scenes', scenes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
