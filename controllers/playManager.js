@@ -41,6 +41,7 @@ exports.getPlayList = function( req, res ) {
   playModel.getPlayList(function(playList) {
     	res.send(playList);
   });
+}
 
 /**
  * getLine returns the lines and ids of lines associated with a play, act and scene

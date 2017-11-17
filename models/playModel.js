@@ -24,8 +24,8 @@ var conn  = mysql.createConnection( {
 exports.getPlayList = function(callback) {
 	var sql = "SELECT Name, PlayID FROM theatreappsuite.play";
 
-	db.queryDB( conn, sql, function(res)) {
-    callback(res);
+	db.queryDB( conn, sql, function(res) {
+		callback(res);
 	});
 }
 
