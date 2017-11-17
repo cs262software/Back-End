@@ -5,7 +5,7 @@
 'use strict';
 
 // Initialize globals
-var fileModel = require('../models/fileModel.js')
+var roleModel = require('../models/roleModel.js')
 var fs = require( "fs" );
 
 /*
@@ -18,7 +18,7 @@ var fs = require( "fs" );
 exports.getRoles = function( req, res ) {
 	var uid = req.query.uid;
 	var fid = "roles";
-	var rolePath = fileModel.getFilePath( uid, fid );
+	var rolePath = roleModel.getRolePath( uid, rid );
 
 	fs.stat( rolePath, function( err, stat ) {
 		if( err == null ) {
@@ -26,7 +26,7 @@ exports.getRoles = function( req, res ) {
 			res.send( content );
 		} else if( err.code == 'ENOENT' ) {
 			console.log( err.code );
-			res.send( 'FILE DOES NOT EXIST\nuid: ' + uid + "\nfid: " + fid );
+			res.send( 'FILE DOES NOT EXIST\nuid: ' + uid + "\nfid: " + rid );
 		} else {
 			console.log( 'FILE ERROR: ', err.code );
 		}
