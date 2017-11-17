@@ -9,6 +9,9 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var files = require('./routes/files');
 var roles = require('./routes/roles');
+var accounts = require('./routes/accounts');
+var acts = require('./routes/acts');
+var scenes = require('./routes/scenes');
 var plays = require('./routes/plays');
 
 var app = express();
@@ -27,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // base routes
 //app.use('/', index); // Uncomment to view test page
+app.use('/api/accounts', accounts);
+app.use('/api/acts', acts);
+app.use('/api/scenes', scenes);
 app.use('/api/users', users);
 app.use('/api/files', files);
 app.use('/api/roles', roles);
