@@ -10,4 +10,5 @@
 var fileModelPass = "[Password Here]";
 exports.fileModelPass = fileModelPass;
 
-// [More passwords go here]
+var theatreSuiteUserPass = "[Password Here]";
+exports.theatreSuiteUserPass = theatreSuiteUserPass;

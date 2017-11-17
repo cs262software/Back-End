@@ -1,5 +1,5 @@
-/*
- * playManager.js contains the functions that handle script accesses
+/**
+ * playManager.js contains the functions that handle play accesses
  */
 
 'use strict';
@@ -7,7 +7,7 @@
 //Initialize globals
 var playModel = require('../models/playModel');
 
-/*
+/**
  * This is a prototype function that returns a default example script.
  * This should be replaced with an actual database controller
  */
@@ -17,7 +17,7 @@ function getPlay( id ) {
 }
 
 
-/*
+/**
  * getPlay returns the xml of the script associated with a certain id
  *
  * @param: req.query.id, the id
@@ -30,7 +30,7 @@ exports.getPlay = function( req, res ) {
 	res.send(getPlay(req.id));
 }
 
-/*
+/**
  * getplayList returns the list of play scripts with their names and ids
  *
  * @param: res
@@ -41,4 +41,32 @@ exports.getPlayList = function( req, res ) {
   playModel.getPlayList(function(playList) {
     	res.send(playList);
   });
+
+/**
+ * getLine returns the lines and ids of lines associated with a play, act and scene
+ *
+ * @param: req.query.playID
+ * @param: req.query.actNum
+ * @param: req.query.sceneNum
+ *
+ * @return: Lines and IDs in JSON obj
+ */
+exports.getLines = function(req, res) {
+	let playID = req.query.playID;
+	let actNum = req.query.actNum;
+	let sceneNum = req.query.sceneNum;
+
+	if (!playID || !actNum || !sceneNum) {
+		res.status(400).send({ error: "Missing playID, actNum, or sceneNum"});
+	} else {
+		playModel.getLines(playID, actNum, sceneNum, function(lines) {
+			if (lines.length > 0) {
+				res.send(lines);
+			} else {
+				res.status(404).send({
+					error: "No lines found for given PlayID, actNum, and sceneNum."
+				});
+			}
+		});
+	}
 }
