@@ -28,27 +28,17 @@ exports.getPlay = function( req, res ) {
 	var id = req.query.id;
 
 	res.send(getPlay(req.id));
-   
-}
-
-/*
- * Function that returns a list of scripts in the form of an array
- * 
- */
-function getplayList () {
-	playList = [];
-	console.log( res );	
-	return playList;
 }
 
 /*
  * getplayList returns the list of play scripts with their names and ids
- * 
+ *
  * @param: res
  *
  * @return: List of scripts
  */
-exports.getplayList = function( res ) {
-
-	res.send(getplayList());
+exports.getPlayList = function( req, res ) {
+  playModel.getPlayList(function(playList) {
+    	res.send(playList);
+  });
 }

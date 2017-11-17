@@ -9,7 +9,7 @@ var modelPass = require( './modelPasswords' );
 var conn = mysql.createConnection ( {
 	host	:'localhost',
 	user	:'theatreSuiteUser',
-	password:'modelPass.loginModelPass,
+	password:'modelPass.loginModelPass',
 	databse :'theatreappsuite',
 });
 
@@ -23,8 +23,8 @@ var conn = mysql.createConnection ( {
  */
 exports.getPlayList = function(callback) {
 	var sql = "SELECT Name, PlayID FROM theatreappsuite.play";
-	
+
 	db.queryDB( conn, sql, function(res)) {
-		callback(res);		
+		callback(res);
 	});
-} 
+}

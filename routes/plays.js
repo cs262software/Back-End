@@ -10,7 +10,11 @@ var playManager = require( '../controllers/playManager' );
 
 router.get( '/', function( req, res, next ) {
 	playManager.getPlay( req, res )
-	playManager.getPlayList( res )
-} );
+
+});
+
+router.get('/all', function( req, res, next ) {
+	playManager.getPlayList( req, res )
+}
 
 module.exports = router;
