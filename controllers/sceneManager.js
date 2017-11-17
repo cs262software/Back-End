@@ -1,7 +1,20 @@
+/*
+ * sceneManager.js contains the functions that handle fetching the scene and error checking
+ */
+
 'use strict';
 
 // Initialize globals
 var sceneModel = require('../models/sceneModel.js');
+
+/*
+ * getScenes returns the number of scenes in the play and act if the play and act exist
+ *
+ * @param: req.query.playid, the PlayID
+ * @param: req.query.act, the ActNum
+ *
+ * @return: The number of scenes in that act and play
+ */
 
 exports.getScenes = function(req, res) {
     var play = req.query.playid;

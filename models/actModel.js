@@ -1,3 +1,7 @@
+/*
+ * actModel.js contains the function to interact with the DB and get the act amount
+ */
+
 'use strict';
 
 // Initialize globals
@@ -10,6 +14,15 @@ var conn  = mysql.createConnection( {
 	password : modelPass.accountModelPass,
 	database : 'theatreappsuite',
 } );
+
+/**
+ * getActAmount searches the DB for the acts associated with the play provided
+ *
+ * @param: playId, the PlayID
+ * @param: callback, the callback function
+ *
+ * @return: the number of acts in the play
+ */
 
 exports.getActAmount = function(playId, callback) {
     var sql = "SELECT MAX(ActNum) as 'NumActs' FROM Line WHERE PlayID = ?;"

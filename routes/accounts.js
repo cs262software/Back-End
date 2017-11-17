@@ -1,5 +1,5 @@
 /*
- * accounts.js Maintains the file system routing information
+ * accounts.js Maintains the account system routing information
  */
 
 'use strict';

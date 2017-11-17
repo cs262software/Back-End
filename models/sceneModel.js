@@ -1,3 +1,7 @@
+/*
+ * sceneModel.js contains the function to interact with the DB and get the scene amount
+ */
+
 'use strict';
 
 // Initialize globals
@@ -10,6 +14,16 @@ var conn  = mysql.createConnection( {
 	password : modelPass.accountModelPass,
 	database : 'theatreappsuite',
 } );
+
+/**
+ * getSceneAmount searches the DB for the scenes associated with the play and act provided
+ *
+ * @param: playId, the PlayID
+ * @param: actId, the act number in that specific play
+ * @param: callback, the callback function
+ *
+ * @return: the number of scenes in that act
+ */
 
 exports.getSceneAmount = function(playId, actId, callback) {
     var sql = "SELECT MAX(SceneNum) as 'NumScenes' FROM Line WHERE PlayID = ? AND ActNum = ?;"

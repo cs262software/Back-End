@@ -1,7 +1,19 @@
+/*
+ * actManager.js contains the functions that handle fetching the act and error checking
+ */
+
 'use strict';
 
 // Initialize globals
 var actModel = require('../models/actModel.js');
+
+/*
+ * getActs returns the number of acts in the play if the play exists
+ *
+ * @param: req.query.playid, the PlayID
+ *
+ * @return: The number of acts for that play
+ */
 
 exports.getActs = function(req, res) {
     var play = req.query.playid;
