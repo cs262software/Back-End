@@ -15,6 +15,21 @@ var conn  = mysql.createConnection( {
 });
 
 /**
+ * getPlayList returns a list of the scripts in the database
+ *
+ * @param: callback, the callback function
+ *
+ * @return: list of scripts
+ */
+exports.getPlayList = function(callback) {
+	var sql = "SELECT Name, PlayID FROM theatreappsuite.play";
+
+	db.queryDB( conn, sql, function(res)) {
+    callback(res);
+	});
+}
+
+/**
  * getLines gets the lines and ids from a play given playID, actNum, and sceneNum
  *
  * @param: playID
