@@ -8,11 +8,11 @@ var express = require( 'express' );
 var router = express.Router();
 var accountManager = require( '../controllers/accountManager' );
 
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     accountManager.validateAccount(req, res)
 });
 
-router.get('/create', function(req, res, next) {
+router.post('/create', function(req, res, next) {
     accountManager.createAccount(req, res);
 });
 

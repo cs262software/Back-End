@@ -46,8 +46,8 @@ exports.validateAccount = function(req, res) {
  */
 
 exports.createAccount = function(req, res) {
-    var username = req.query.username;
-    var password = req.query.password;
+    var username = req.body.username;
+    var password = req.body.password;
 
     if (!username || !password) {
         res.send({"status": "error", "message": "missing a parameter"});
