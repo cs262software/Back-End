@@ -4,15 +4,16 @@
 
 'use strict';
 
+// Initialize globals
 var mysql = require( 'mysql' );
 var db = require( './dbModule' );
-var modelPass = require( './modelPasswords' );
+var modelUser = require( './modelUser' );
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'theatreSuiteUser',
-	password : modelPass.theatreSuiteUserPass,
+	user     : modelUser.username,
+	password : modelUser.password,
 	database : 'theatreappsuite',
-});
+} );
 
 /**
  * getPlayList returns a list of the scripts in the database

@@ -6,14 +6,14 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var accountManager = require( '../controllers/accountManager' );
+var loginManager = require( '../controllers/loginManager' );
 
 router.post('/', function(req, res, next) {
-    accountManager.validateAccount(req, res)
+    loginManager.validateLogin(req, res)
 });
 
 router.post('/create', function(req, res, next) {
-    accountManager.createAccount(req, res);
+    loginManager.createLogin(req, res);
 });
 
 module.exports = router;

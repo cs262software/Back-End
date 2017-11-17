@@ -1,5 +1,5 @@
 /*
- * accountModel.js contains the functions to interact with the DB on the account side
+ * loginModel.js contains the functions to interact with the DB on the login side
  */
 
 'use strict';
@@ -7,11 +7,11 @@
 // Initialize globals
 var mysql = require( 'mysql' );
 var db = require( './dbModule' );
-var modelPass = require( './modelPasswords' );
+var modelUser = require( './modelUser' );
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'root',
-	password : modelPass.accountModelPass,
+	user     : modelUser.username,
+	password : modelUser.password,
 	database : 'theatreappsuite',
 } );
 
@@ -40,7 +40,7 @@ exports.getPassword = function(username, callback) {
 }
 
 /**
- * createUser inserts the new account with username and password into the database
+ * createLogin inserts the new account with username and password into the database
  *
  * @param: username, the username
  * @param: password, the password
@@ -48,7 +48,7 @@ exports.getPassword = function(username, callback) {
  *
  * @return: the new UserID
  */
-exports.createUser = function(username, password, callback) {
+exports.createLogin = function(username, password, callback) {
 	var sql = "INSERT INTO `theatreappsuite`.`user` (`UserName`, `Password`) VALUES (?, ?);"
 	var inserts = [username, password];
 	sql = mysql.format(sql, inserts);
