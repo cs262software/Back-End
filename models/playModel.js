@@ -16,13 +16,13 @@ var conn  = mysql.createConnection( {
 } );
 
 /**
- * getPlayList returns a list of the scripts in the database
+ * getAllPlays returns a list of the scripts in the database
  *
  * @param: callback, the callback function
  *
  * @return: list of scripts
  */
-exports.getPlayList = function(callback) {
+exports.getAllPlays = function(callback) {
 	var sql = "SELECT Name, PlayID FROM theatreappsuite.play";
 
 	db.queryDB( conn, sql, function(res) {
@@ -31,7 +31,54 @@ exports.getPlayList = function(callback) {
 }
 
 /**
- * getLines gets the lines and ids from a play given playID, actNum, and sceneNum
+ * getActsByPlayID searches the DB for the acts associated with the play provided
+ *
+ * @param: playId, the PlayID
+ * @param: callback, the callback function
+ *
+ * @return: the number of acts in the play
+ */
+
+exports.getActsByPlayID = function(playId, callback) {
+    var sql = "SELECT MAX(ActNum) as 'NumActs' FROM Line WHERE PlayID = ?;"
+    var inserts = [playId];
+    sql = mysql.format(sql, inserts);
+
+    db.queryDB(conn, sql, function(res) {
+        if (res[0].NumActs === null) {
+            callback("-1");
+        }
+        var actAmount = res[0].NumActs;
+        callback(actAmount);
+    });
+}
+
+/**
+ * getScenesByActNum searches the DB for the scenes associated with the play and act provided
+ *
+ * @param: playId, the PlayID
+ * @param: actNum, the act number in that specific play
+ * @param: callback, the callback function
+ *
+ * @return: the number of scenes in that act
+ */
+
+exports.getScenesByActNum = function(playId, actNum, callback) {
+    var sql = "SELECT MAX(SceneNum) as 'NumScenes' FROM Line WHERE PlayID = ? AND ActNum = ?;"
+    var inserts = [playId, actNum];
+    sql = mysql.format(sql, inserts);
+
+    db.queryDB(conn, sql, function(res) {
+        if (res[0].NumScenes === null) {
+            callback("-1");
+        }
+        var sceneAmount = res[0].NumScenes;
+        callback(sceneAmount);
+    });
+}
+
+/**
+ * getLinesBySceneNum gets the lines and ids from a play given playID, actNum, and sceneNum
  *
  * @param: playID
  * @param: actNum
@@ -40,7 +87,7 @@ exports.getPlayList = function(callback) {
  *
  * @return: list of lines and ids and notes
  */
-exports.getLines = function(playID, actNum, sceneNum, callback) {
+exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
 	var sql = "SELECT LineID, LineNum, Text FROM line WHERE PlayID = ? AND ActNum = ? AND SceneNum = ?";
 	var inserts = [playID, actNum, sceneNum];
 	sql = mysql.format(sql, inserts);

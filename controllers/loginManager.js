@@ -29,7 +29,7 @@ exports.validateLogin = function(req, res) {
                 res.send({"status": "error", "message": "incorrect username or password"});
             }
             if (bcrypt.compareSync(password, hash)) {
-                res.send({"userId": uid});
+                res.send({"userID": uid});
             }
             else {
                 res.send({"status": "error", "message": "incorrect username or password"});
