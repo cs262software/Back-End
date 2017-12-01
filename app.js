@@ -13,6 +13,8 @@ var scripts = require('./routes/scripts');
 var accounts = require('./routes/accounts');
 var acts = require('./routes/acts');
 var scenes = require('./routes/scenes');
+var lights = require('./routes/lights')
+var sounds = require('./routes/sounds')
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use('/scripts', scripts);
 app.use('/accounts', accounts);
 app.use('/acts', acts);
 app.use('/scenes', scenes);
+app.use('/lights', lights);
+app.use('/sounds', sounds);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
