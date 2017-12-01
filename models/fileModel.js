@@ -15,6 +15,9 @@ var conn  = mysql.createConnection( {
 	database : 'theatreappsuite',
 } );
 
+exports.getAllFiles = function(callback) {
+		var sql = "SELECT FROM theatreappsuite.file";
+}
 /**
  * getFilePath searches db for file path if it is viewable by user
  *
