@@ -8,9 +8,9 @@ var bodyParser = require('body-parser');
 var login = require('./routes/login');
 var users = require('./routes/users');
 var roles = require('./routes/roles');
-var accounts = require('./routes/accounts');
-var acts = require('./routes/acts');
-var scenes = require('./routes/scenes');
+//var accounts = require('./routes/accounts');
+//var acts = require('./routes/acts');
+//var scenes = require('./routes/scenes');
 var lights = require('./routes/lights')
 var sounds = require('./routes/sounds')
 var files = require('./routes/files');
@@ -33,15 +33,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // base routes
-app.use('/', index);
-app.use('/users', users);
-app.use('/files', files);
-app.use('/roles', roles);
-app.use('/accounts', accounts);
-app.use('/acts', acts);
-app.use('/scenes', scenes);
-app.use('/lights', lights);
-app.use('/sounds', sounds);
+//app.use('/', index);
+//app.use('/accounts', accounts);
+//app.use('/acts', acts);
+//app.use('/scenes', scenes);
+app.use('/api/lights', lights);
+app.use('/api/sounds', sounds);
 app.use('/api/login', login);
 app.use('/api/users', users);
 app.use('/api/roles', roles);
