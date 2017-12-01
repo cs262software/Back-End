@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var login = require('./routes/login');
 var users = require('./routes/users');
 var roles = require('./routes/roles');
-//var accounts = require('./routes/accounts');
+var blocking = require('./routes/blocking');
 //var acts = require('./routes/acts');
 //var scenes = require('./routes/scenes');
 var lights = require('./routes/lights')
@@ -34,7 +34,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // base routes
 //app.use('/', index);
-//app.use('/accounts', accounts);
 //app.use('/acts', acts);
 //app.use('/scenes', scenes);
 app.use('/api/lights', lights);
@@ -46,6 +45,7 @@ app.use('/api/files', files);
 app.use('/api/plays', plays);
 app.use('/api/props', props);
 app.use('/api/notes', notes);
+app.use('/blocking', blocking);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
