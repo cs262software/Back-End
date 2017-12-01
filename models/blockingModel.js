@@ -16,6 +16,25 @@ var conn  = mysql.createConnection( {
 } );
 
 
+/**
+ * getBlocking returns the blocking instructions associated with the LineID passed to the function
+ *
+ * @param: lid, the LineID
+ *
+ * @param: callback, the callback function
+ *
+ * @return: blocking elements stored in arrays with i indices corresponding to i characters
+ */
+exports.getBlockingScene = function( lid, callback ) {
+	if ( !lid ) return "NO RESULTS FOUND\n";
+	var sql = "SELECT characterline.lineid AS LineID, characterline.characterid AS CharacterID, characterinfo.name AS Name, \
+	blocking.originx AS OriginX, blocking.originy AS OriginY, blocking.originz AS OriginZ, blocking.destx AS DestX, blocking.desty AS DestY, blocking.destz AS DestZ, blocking.movementType AS MovementType, blocking.orientation AS Orientation \
+	FROM characterline \
+	INNER JOIN theatreappsuite.blocking ON characterline.BlockingID = blocking.BlockingID \
+	INNER JOIN theatreappsuite.characterinfo ON characterline.CharacterID = characterinfo.CharacterID \
+	WHERE Play = ? AND ActNum = ? AND SceneNum = ?";
+	var inserts = [ lid ];
+	sql = mysql.format( sql, inserts);
 
 /**
  * getBlocking returns the blocking instructions associated with the LineID passed to the function
