@@ -10,7 +10,7 @@ var db = require( './dbModule' );
 var modelPass = require( './modelPasswords' );
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'theatreSuiteUser',
+	user     : 'theatreappsuite',
 	password : modelPass.loginModelPass,
 	database : 'theatreappsuite',
 });
