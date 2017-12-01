@@ -116,3 +116,22 @@ exports.getNote = function(lineID, callback) {
 		}
 	});
 }
+
+/**
+ * updateNote updates the DirectorsNote of a given line
+ *
+ * @param: lineID
+ * @param: note
+ * @param: callback (function)
+ *
+ * @return: Success? (bool)
+ */
+exports.updateNote = function(lineID, note, callback) {
+	console.log( "note " + note + " lineID " + lineID);
+	var sql = "UPDATE line SET DirectorNote = ? WHERE LineID = ?";
+	var inserts = [note, lineID];
+	sql = mysql.format(sql, inserts);
+	db.queryDB(conn, sql, function(res) {
+		callback(res.affectedRows == 1);
+	});
+}

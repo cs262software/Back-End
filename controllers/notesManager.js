@@ -25,3 +25,23 @@ exports.getNotes = function( req, res ) {
 		});
 	}
 }
+
+/**
+ * updateNotes updates the director's notes on a line
+ *
+ * @param: req, res
+ *
+ * @return: Success? (Bool)
+ */
+exports.updateNotes = function( req, res ) {
+	let lineID = req.params.LineID;
+	let note = req.body.note;
+
+	if (!lineID || !note) {
+		res.status(400).send({ error: "Missing LineID or note (/api/notes/:LineID?note=x)" });
+	} else {
+		playModel.updateNote(lineID, note, function(success) {
+			res.send(success);
+		});
+	}
+}

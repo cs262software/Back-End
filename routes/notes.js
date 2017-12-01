@@ -12,4 +12,8 @@ router.get( '/:LineID', function( req, res ) {
 	notesManager.getNotes( req, res )
 });
 
+router.post( '/update/:LineID', function( req, res ) {
+	notesManager.updateNotes( req, res );
+});
+
 module.exports = router;
