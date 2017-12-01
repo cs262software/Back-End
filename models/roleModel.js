@@ -27,8 +27,25 @@ exports.getRolePath = function( userID, callback ) {
 	if ( !userID ) return "NO RESULTS FOUND\n";
 	var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
 	var inserts = [ userID, playID ];
-	sql = mysql.format( sql, inserts );
-	db.queryDB( conn, sql, function( res ) {
+    sql = mysql.format(sql, inserts);
+    var obj = {};
+    db.queryDB(conn, sql, function (res) {
+        /*var rolePath = "RolePath";
+        obj[rolePath] = res[0].RolePath;
+        /*var director = "director";
+        obj[director] = res[0].director;
+        var stageManager = "stageManager";
+        obj[stageManager] = res[0].stageManager;
+        var asstStgManager = "asstStgManager";
+        obj[asstStgManager] = res[0].getAsstStgManager;
+        var light = "light";
+        obj[light] = res[0].light;
+        var sound = "sound";
+        obj[sound] = res[0].sound;
+        var stageCrew = "stageCrew";
+        obj[stageCrew] = res[0].stageCrew;
+        var actor = "actor";
+        obj[actor] = res[0].actor; 
         var rolePath = res[0].RolePath;
         var director = res[0].director;
         var stageManager = res[0].stageManager;
@@ -36,12 +53,14 @@ exports.getRolePath = function( userID, callback ) {
         var light = res[0].light;
         var sound = res[0].sound;
         var stageCrew = res[0].stageCrew;
-        var actor = res[0].actor;
-        callback(rolePath ? rolePath : "NO RESULTS FOUND\n");
+        var actor = res[0].actor; 
+        var myJSON = JSON.stringify(obj); */
+
+        callback(res ? res : "NO RESULTS FOUND\n");
     });
 }
 
-exports.getDirector = function (userID, callback) {
+/*exports.getDirector = function (userID, callback) {
     if (!userID) return "NO RESULTS FOUND\n";
     var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
     var inserts = [userID, playID];
@@ -127,4 +146,4 @@ exports.getActor = function (userID, callback) {
         var actor = res[0].actor;
         callback(actor ? actor : false);
     });
-}
+} */
