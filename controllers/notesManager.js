@@ -15,10 +15,10 @@ var playModel = require('../models/playModel');
  * @return: Notes
  */
 exports.getNotes = function( req, res ) {
-	let lineID = req.params.LineID;
+	let lineID = req.query.LineID;
 
 	if (!lineID ) {
-		res.status(400).send({ error: "Missing LineID as URL parameter" });
+		res.status(400).send({ error: "Missing LineID in url query (/api/notes?LineID=#)" });
 	} else {
 		playModel.getNote(lineID, function(notes) {
 			res.send(notes);
@@ -34,11 +34,11 @@ exports.getNotes = function( req, res ) {
  * @return: Success? (Bool)
  */
 exports.updateNotes = function( req, res ) {
-	let lineID = req.params.LineID;
+	let lineID = req.body.LineID;
 	let note = req.body.note;
 
 	if (!lineID || !note) {
-		res.status(400).send({ error: "Missing LineID or note (/api/notes/:LineID?note=x)" });
+		res.status(400).send({ error: "Missing LineID or note in POST body" });
 	} else {
 		playModel.updateNote(lineID, note, function(success) {
 			res.send(success);

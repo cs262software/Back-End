@@ -30,7 +30,7 @@ exports.getSoundsInfo = function(lineId, callback) {
     sql = mysql.format(sql, inserts);
 
     db.queryDB(conn, sql, function(res) {
-        if (res.length === 0) {
+        if (!res[0] || res.length === 0) {
             callback("-1", "-1", "-1", "-1", "-1");
             return;
         }

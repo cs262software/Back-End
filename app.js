@@ -45,7 +45,7 @@ app.use('/api/files', files);
 app.use('/api/plays', plays);
 app.use('/api/props', props);
 app.use('/api/notes', notes);
-app.use('/blocking', blocking);
+app.use('/api/blocking', blocking);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

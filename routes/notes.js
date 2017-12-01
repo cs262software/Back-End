@@ -8,13 +8,14 @@ var express = require( 'express' );
 var router = express.Router();
 var notesManager = require( '../controllers/notesManager' );
 
-router.get( '/:LineID', function( req, res ) {
+// Requires in url query: ?LineID=$
+router.get( '/', function( req, res ) {
 	notesManager.getNotes( req, res )
 });
 
 // This post requires body to look like
-// { note: "XXX" }
-router.post( '/update/:LineID', function( req, res ) {
+// { LineID: #, note: "XXX" }
+router.post( '/update', function( req, res ) {
 	notesManager.updateNotes( req, res );
 });
 

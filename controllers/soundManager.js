@@ -16,10 +16,10 @@ var soundModel = require('../models/soundModel.js');
  */
 
 exports.getSoundsInfo = function(req, res) {
-    var line = req.query.lineid;
+    var line = req.query.LineID;
 
     if (!line) {
-        res.send({"status": "error", "message": "missing line ID number"});
+        res.send({"status": "error", "message": "missing LineID in URL query"});
         return;
     }
 

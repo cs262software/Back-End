@@ -30,17 +30,18 @@ exports.getLightsInfo = function(lineId, callback) {
     sql = mysql.format(sql, inserts);
 
     db.queryDB(conn, sql, function(res) {
-        if (res.length === 0) {
+        if ( !res[0] || res.length === 0 ) {
             callback("-1", "-1", "-1", "-1", "-1", "-1");
             return;
-        }
-        var lightId = res[0].LightID;
-        var name = res[0].Name;
-        var type = res[0].Type;
-        var userId = res[0].UserID;
-        var location = res[0].Location;
-        var status = res[0].Status;
+        } else {
+            var lightId = res[0].LightID;
+            var name = res[0].Name;
+            var type = res[0].Type;
+            var userId = res[0].UserID;
+            var location = res[0].Location;
+            var status = res[0].Status;
 
-        callback(lightId, name, type, userId, location, status);
+            callback(lightId, name, type, userId, location, status);
+        }
     });
 }

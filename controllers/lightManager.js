@@ -16,10 +16,10 @@ var lightModel = require('../models/lightModel.js');
  */
 
 exports.getLightsInfo = function(req, res) {
-    var line = req.query.lineid;
+    var line = req.query.LineID;
 
     if (!line) {
-        res.send({"status": "error", "message": "missing line ID number"});
+        res.send({"status": "error", "message": "missing LineID number in url query"});
         return;
     }
 
