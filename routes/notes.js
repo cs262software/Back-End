@@ -12,6 +12,8 @@ router.get( '/:LineID', function( req, res ) {
 	notesManager.getNotes( req, res )
 });
 
+// This post requires body to look like
+// { note: "XXX" }
 router.post( '/update/:LineID', function( req, res ) {
 	notesManager.updateNotes( req, res );
 });
