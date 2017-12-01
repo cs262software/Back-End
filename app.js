@@ -5,16 +5,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+var login = require('./routes/login');
 var users = require('./routes/users');
-var files = require('./routes/files');
 var roles = require('./routes/roles');
-var scripts = require('./routes/scripts');
 var accounts = require('./routes/accounts');
 var acts = require('./routes/acts');
 var scenes = require('./routes/scenes');
 var lights = require('./routes/lights')
 var sounds = require('./routes/sounds')
+var files = require('./routes/files');
+var plays = require('./routes/plays');
+var props = require('./routes/props');
+var notes = require('./routes/notes');
 
 var app = express();
 
@@ -35,12 +37,18 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/files', files);
 app.use('/roles', roles);
-app.use('/scripts', scripts);
 app.use('/accounts', accounts);
 app.use('/acts', acts);
 app.use('/scenes', scenes);
 app.use('/lights', lights);
 app.use('/sounds', sounds);
+app.use('/api/login', login);
+app.use('/api/users', users);
+app.use('/api/roles', roles);
+app.use('/api/files', files);
+app.use('/api/plays', plays);
+app.use('/api/props', props);
+app.use('/api/notes', notes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
