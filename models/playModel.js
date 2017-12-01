@@ -9,8 +9,8 @@ var mysql = require( 'mysql' );
 var db = require( './dbModule' );
 var modelUser = require( './modelUser' );
 var conn  = mysql.createConnection( {
-	host     : 'localhost',
-	user     : modelUser.username,
+	host	 : 'localhost',
+	user	 : modelUser.username,
 	password : modelUser.password,
 	database : 'theatreappsuite',
 } );
@@ -40,17 +40,17 @@ exports.getAllPlays = function(callback) {
  */
 
 exports.getActsByPlayID = function(playId, callback) {
-    var sql = "SELECT MAX(ActNum) as 'NumActs' FROM Line WHERE PlayID = ?;"
-    var inserts = [playId];
-    sql = mysql.format(sql, inserts);
+	var sql = "SELECT MAX(ActNum) as 'NumActs' FROM Line WHERE PlayID = ?;"
+	var inserts = [playId];
+	sql = mysql.format(sql, inserts);
 
-    db.queryDB(conn, sql, function(res) {
-        if (res[0].NumActs === null) {
-            callback("-1");
-        }
-        var actAmount = res[0].NumActs;
-        callback(actAmount);
-    });
+	db.queryDB(conn, sql, function(res) {
+		if (res[0].NumActs === null) {
+			callback("-1");
+		}
+		var actAmount = res[0].NumActs;
+		callback(actAmount);
+	});
 }
 
 /**
@@ -64,17 +64,17 @@ exports.getActsByPlayID = function(playId, callback) {
  */
 
 exports.getScenesByActNum = function(playId, actNum, callback) {
-    var sql = "SELECT MAX(SceneNum) as 'NumScenes' FROM Line WHERE PlayID = ? AND ActNum = ?;"
-    var inserts = [playId, actNum];
-    sql = mysql.format(sql, inserts);
+	var sql = "SELECT MAX(SceneNum) as 'NumScenes' FROM Line WHERE PlayID = ? AND ActNum = ?;"
+	var inserts = [playId, actNum];
+	sql = mysql.format(sql, inserts);
 
-    db.queryDB(conn, sql, function(res) {
-        if (res[0].NumScenes === null) {
-            callback("-1");
-        }
-        var sceneAmount = res[0].NumScenes;
-        callback(sceneAmount);
-    });
+	db.queryDB(conn, sql, function(res) {
+		if (res[0].NumScenes === null) {
+			callback("-1");
+		}
+		var sceneAmount = res[0].NumScenes;
+		callback(sceneAmount);
+	});
 }
 
 /**
@@ -93,5 +93,26 @@ exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function(res) {
 		callback(res);
+	});
+}
+
+/**
+ * getNote gets the DirectorsNote of a given line
+ *
+ * @param: lineID
+ * @param: callback (function)
+ *
+ * @return: list of lines and ids and notes
+ */
+exports.getNote = function(lineID, callback) {
+	var sql = "SELECT DirectorNote FROM line WHERE LineID = ?";
+	var inserts = [lineID];
+	sql = mysql.format(sql, inserts);
+	db.queryDB(conn, sql, function(res) {
+		if (!res[0]) {
+			callback("");
+		} else {
+			callback(res[0].DirectorNote);
+		}
 	});
 }

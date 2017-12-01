@@ -11,6 +11,7 @@ var roles = require('./routes/roles');
 var files = require('./routes/files');
 var plays = require('./routes/plays');
 var props = require('./routes/props');
+var props = require('./routes/notes');
 // var acts = require('./routes/acts');
 // var scenes = require('./routes/scenes');
 
@@ -35,6 +36,7 @@ app.use('/api/roles', roles);
 app.use('/api/files', files);
 app.use('/api/plays', plays);
 app.use('/api/props', props);
+app.use('/api/notes', props);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

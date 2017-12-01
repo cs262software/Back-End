@@ -1,5 +1,5 @@
 /**
- * propManager.js contains the functions that handle prop accesses
+ * propsManager.js contains the functions that handle prop accesses
  */
 
 'use strict';
