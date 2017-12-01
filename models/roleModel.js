@@ -37,6 +37,94 @@ exports.getRolePath = function( userID, callback ) {
         var sound = res[0].sound;
         var stageCrew = res[0].stageCrew;
         var actor = res[0].actor;
-		callback( rolePath ? rolePath : "NO RESULTS FOUND\n" );
-	} );
+        callback(rolePath ? rolePath : "NO RESULTS FOUND\n");
+    });
+}
+
+exports.getDirector = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var director = res[0].director;
+        callback(director ? director : false);
+    });
+}
+
+exports.getStageManager = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var stageManager = res[0].stageManager;
+        callback(stageManager ? stageManager : false);
+    });
+}
+
+exports.getAsstStgManager = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var asstStgManager = res[0].asstStgManager;
+        callback(asstStgManager ? asstStgManager : false);
+    });
+}
+
+exports.getLight = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var light = res[0].light;
+        callback(lgiht ? light : false);
+    });
+}
+
+exports.getSound = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var sound = res[0].sound;
+        callback(sound ? sound : false);
+    });
+}
+
+exports.getStageCrew = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var stageCrew = res[0].stageCrew;
+        callback(stageCrew ? stageCrew : false);
+    });
+}
+
+exports.getDirector = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var isDirector = res[0].isDirector;
+        callback(isDirector ? isDirector : false);
+    });
+}
+
+exports.getActor = function (userID, callback) {
+    if (!userID) return "NO RESULTS FOUND\n";
+    var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var inserts = [userID, playID];
+    sql = mysql.format(sql, inserts);
+    db.queryDB(conn, sql, function (res) {
+        var actor = res[0].actor;
+        callback(actor ? actor : false);
+    });
 }
