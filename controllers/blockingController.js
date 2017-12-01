@@ -21,18 +21,24 @@ exports.getBlocking = function( req, res ) {
 	if( !lid ) {
 		res.status(400).send({ error: "Missing lineID."});
 	} else {
-		blockingModel.getBlocking( lid, function(characterid, lineid, originx, originy, destx, desty, movementtype, orientation) {
-			res.json({
-				CharacterID: characterid,
-				LineID: lineid,
-				OriginX: originx,
-				OriginY: originy,
-				DestX: destx,
-				DestY: desty,
-				MovementType: movementtype,
-				Orientation: orientation
-			})
-		});
+		blockingModel.getBlocking(lid, function(blocking) {
+			res.send(blocking);
+		} );
+		// blockingModel.getBlocking( lid, function(characterid, lineid, originx, originy, destx, desty, movementtype, orientation) {
+		// 	res.json({
+		// 		CharacterID: characterid,
+		// 		LineID: lid,
+		// 		BlockingID: blockingid,
+		// 		OriginX: originx,
+		// 		OriginY: originy,
+		// 		OriginZ: originz,
+		// 		DestX: destx,
+		// 		DestY: desty,
+		// 		DestZ: destz,
+		// 		MovementType: movementtype,
+		// 		Orientation: orientation
+		// 	})
+		//});
 	}	
 }
 

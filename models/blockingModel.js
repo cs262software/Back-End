@@ -28,35 +28,41 @@ var conn  = mysql.createConnection( {
  */
 exports.getBlocking = function( lid, callback ) {
 	if ( !lid ) return "NO RESULTS FOUND\n";
-	var sql = 'SELECT * FROM `theatreappsuite`.`blocking` WHERE LineID = ?';
+	var sql = "SELECT characterline.lineid AS LineID, characterline.characterid AS CharacterID, characterinfo.name AS Name, \
+	blocking.originx AS OriginX, blocking.originy AS OriginY, blocking.originz AS OriginZ, blocking.destx AS DestX, blocking.desty AS DestY, blocking.destz AS DestZ, blocking.movementType AS MovementType, blocking.orientation AS Orientation \
+	FROM characterline \
+	INNER JOIN theatreappsuite.blocking ON characterline.BlockingID = blocking.BlockingID \
+	INNER JOIN theatreappsuite.characterinfo ON characterline.CharacterID = characterinfo.CharacterID \
+	WHERE LineID = ?";	
 	var inserts = [ lid ];
 	sql = mysql.format( sql, inserts);
 
+
+
 	
 	db.queryDB( conn, sql, function( res ) {
-		// blocking info for each key stored in array where index i corresponds to info for character i
-		var characterID = [], lineID =[] , originx = [], originy = [], destx = [], desty = [], movementType = [], orientation = [];
-		// loop through all rows returned from db
-		for (var i=0; i<res.length; i++) {
-			characterID[i] = res[i].CharacterID;
-			lineID[i] = res[i].LineID;
-			originx[i] = res[i].OriginX;
-			originy[i] = res[i].OriginX;
-			destx[i] = res[i].DestX;
-			desty[i] = res[i].DestY;
-			movementType[i] = res[i].MovementType;
-			orientation[i] = res[i].Orientation;
+
+		if ( res.length == 0) {
+			if ( !lid ) return "NO RESULTS FOUND\n";
+			sql = "SELECT characterline.characterid AS CharacterID, characterline.lineid AS LineID, characterinfo.name AS Name \
+			FROM characterline \
+			INNER JOIN theatreappsuite.characterinfo ON characterline.characterid = characterinfo.characterid \
+			WHERE LineID = ?";	
+			inserts = [ lid ];
+			sql = mysql.format( sql, inserts);
+
+			db.queryDB(conn, sql, function(res2) {
+				callback(res2);
+			})
 		}
 
-		callback( characterID ? characterID : "NO CHARACTER ID FOUND\n",
-			lineID ? lineID : "NO LINE ID FOUND\n",
-			originx ? originx : "NO ORIGIN-X FOUND\n",
-			originy ? originy : "NO ORIGIN-Y FOUND\n",
-			destx ? destx : "NO DEST-X FOUND\n",
-			desty ? desty : "NO DEST-Y FOUND\n",
-			movementType ? movementType : "NO MOVEMENTTYPE FOUND\n",
-			orientation ? orientation : "NO ORIENTATION FOUND\n"
-			);
+		
+		else {
+			callback(res);
+		}
+
+
+
 	} );
 }
 
