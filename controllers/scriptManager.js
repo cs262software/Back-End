@@ -3,15 +3,8 @@
  */
 
 'use strict';
-
-/*
- * This is a prototype function that returns a default example script.
- * This should be replaced with an actual database controller
- */
-
-function getScript( id ) {
-   return "<?xml version\"1.0\"?><script title=\"The Interview\" author=\"Patrick M. Bailey\" license=\"2011\"><roles><character id='1' name='John'/><character id='12' name='Princess'/></roles><act id='2'>t<scene id='2' title='Confrontation'><description>In <em>the</em> castle</description><line id='ABC1234'><!-- line id deterministically generated --><text><em>Princess enters the scene</em></text></line><line id='FEFE332' characterID='12'><text>But daddy, I <em>love</em> him!<!-- can include em, strong tags.--></text></line><!--</scene></act> XML MAY be well-formed (or not) --></script>"
-}
+var model = require('../models/scriptModel')
+var fs = require('fs')
 
 
 /*
@@ -21,9 +14,12 @@ function getScript( id ) {
  *
  * @return: Requested script xml
  */
-exports.getScript = function( req, res ) {
+exports.inputXML = function( req, res ) {
 	var id = req.query.id;
-
-	res.send(getScript(req.id));
+	
+	var xml = fs.readFileSync('parsing/output/test.xml')
+	xml = xml.toString();
+	//console.log(xml)
+	res.send(model.inputXML(xml));
    
 }

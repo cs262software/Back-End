@@ -1,5 +1,5 @@
 /*
- * scripts.js Allows scripts to be retrieved
+ * scripts.js Allows scripts to be posted
  */
 
 'use strict';
@@ -8,8 +8,9 @@ var express = require( 'express' );
 var router = express.Router();
 var scriptManager = require( '../controllers/scriptManager' );
 
+
 router.get( '/', function( req, res, next ) {
-	scriptManager.getScript( req, res )
+	scriptManager.inputXML( req, res )
 } );
 
 module.exports = router;
