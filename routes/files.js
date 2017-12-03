@@ -6,7 +6,7 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var fileManager = require( '../controllers/fileManager' );
+var fileManager = require( '../managers/fileManager' );
 
 router.get( '/', function( req, res, next ) {
 	fileManager.getFile( req, res )

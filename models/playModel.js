@@ -40,16 +40,12 @@ exports.getAllPlays = function(callback) {
  */
 
 exports.getActsByPlayID = function(playId, callback) {
-	var sql = "SELECT MAX(ActNum) as 'NumActs' FROM Line WHERE PlayID = ?;"
+	var sql = "SELECT DISTINCT ActNum FROM Line WHERE PlayID = ? ORDER BY ActNum ASC;"
 	var inserts = [playId];
 	sql = mysql.format(sql, inserts);
 
 	db.queryDB(conn, sql, function(res) {
-		if (res[0].NumActs === null) {
-			callback("-1");
-		}
-		var actAmount = res[0].NumActs;
-		callback(actAmount);
+		callback(res);
 	});
 }
 
@@ -64,16 +60,12 @@ exports.getActsByPlayID = function(playId, callback) {
  */
 
 exports.getScenesByActNum = function(playId, actNum, callback) {
-	var sql = "SELECT MAX(SceneNum) as 'NumScenes' FROM Line WHERE PlayID = ? AND ActNum = ?;"
+	var sql = "SELECT DISTINCT SceneNum FROM Line WHERE PlayID = ? AND ActNum = ? ORDER BY SceneNum ASC;"
 	var inserts = [playId, actNum];
 	sql = mysql.format(sql, inserts);
 
 	db.queryDB(conn, sql, function(res) {
-		if (res[0].NumScenes === null) {
-			callback("-1");
-		}
-		var sceneAmount = res[0].NumScenes;
-		callback(sceneAmount);
+		callback(res);
 	});
 }
 

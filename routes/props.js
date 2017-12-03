@@ -6,7 +6,7 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var propsManager = require( '../controllers/propsManager' );
+var propManager = require( '../managers/propManager' );
 
 router.get( '/:LineID', function( req, res ) {
 	propsManager.getProps( req, res )

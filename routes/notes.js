@@ -6,7 +6,7 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var notesManager = require( '../controllers/notesManager' );
+var notesManager = require( '../managers/notesManager' );
 
 // Requires in url query: ?LineID=$
 router.get( '/', function( req, res ) {

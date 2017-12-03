@@ -6,7 +6,7 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var playManager = require( '../controllers/playManager' );
+var playManager = require( '../managers/playManager' );
 
 router.get( '/:PlayID', function( req, res ) {
 	// Not yet implemented, or necessarily needed...

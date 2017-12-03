@@ -6,26 +6,26 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var blockingController = require( '../controllers/blockingController' );
+var blockingManager = require( '../managers/blockingManager' );
 
-
-// get/read blocking 
-router.get( '/', function( req, res, next) {
-	blockingController.getBlocking( req, res )
-} );
-
-	
+// get/read blocking
+router.get( '/:LineID', function( req, res, next ) {
+	blockingManager.getBlockingByLineID( req, res );
+});
 
 // create blocking instruction
-router.post( '/create', function(req, res, next) {
-	blockingController.createBlocking( req, res)
-} );
+router.post( '/:LineID', function( req, res, next ) {
+	blockingManager.createBlocking( req, res );
+});
 
-
+// update blocing instruction
+router.put( '/:LineID', function( req, res, next) {
+	blockingManager.updateBlocking( req, res );
+});
 
 // delete blocking instruction
-router.post( '/delete', function(req, res, next) {
-	blockingController.deleteBlocking(req, res)
-} );
+router.delete( '/:LineID', function( req, res, next ) {
+	blockingManager.deleteBlocking( req, res );
+});
 
 module.exports = router;

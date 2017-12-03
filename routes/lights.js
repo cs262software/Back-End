@@ -6,7 +6,7 @@
 
 var express = require( 'express' );
 var router = express.Router();
-var lightManager = require( '../controllers/lightManager' );
+var lightManager = require( '../managers/lightManager' );
 
 router.get('/', function(req, res, next) {
     lightManager.getLightsInfo(req, res);

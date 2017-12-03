@@ -7,17 +7,18 @@
 // Initialize globals
 var mysql = require( 'mysql' );
 var db = require( './dbModule' );
-var modelPass = require( './modelPasswords' );
+//var modelPass = require( './modelPasswords' );
+var modelUser = require('./modelUser');
+
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'theatreSuiteUser',
-	password : modelPass.blockingModelPass,
+	user     : modelUser.username,
+	password : modelUser.password,
 	database : 'theatreappsuite',
 } );
 
-
 /**
- * getBlocking returns the blocking instructions associated with the LineID passed to the function
+ * getBlockingByLineID returns the blocking instructions at or before the LineID passed to the function
  *
  * @param: lid, the LineID
  *
@@ -25,64 +26,44 @@ var conn  = mysql.createConnection( {
  *
  * @return: blocking elements stored in arrays with i indices corresponding to i characters
  */
-exports.getBlockingScene = function( lid, callback ) {
-	if ( !lid ) return "NO RESULTS FOUND\n";
-	var sql = "SELECT characterline.lineid AS LineID, characterline.characterid AS CharacterID, characterinfo.name AS Name, \
-	blocking.originx AS OriginX, blocking.originy AS OriginY, blocking.originz AS OriginZ, blocking.destx AS DestX, blocking.desty AS DestY, blocking.destz AS DestZ, blocking.movementType AS MovementType, blocking.orientation AS Orientation \
-	FROM characterline \
-	INNER JOIN theatreappsuite.blocking ON characterline.BlockingID = blocking.BlockingID \
-	INNER JOIN theatreappsuite.characterinfo ON characterline.CharacterID = characterinfo.CharacterID \
-	WHERE Play = ? AND ActNum = ? AND SceneNum = ?";
+exports.getBlockingByLineID = function( lid, callback ) {
+
+	var sql = (`
+		SELECT line.PlayID, line.ActNum, line.SceneNum, line.LineNum
+		FROM line
+		WHERE LineID = ?
+	`);
 	var inserts = [ lid ];
-	sql = mysql.format( sql, inserts);
+	sql = mysql.format( sql, inserts );
 
-/**
- * getBlocking returns the blocking instructions associated with the LineID passed to the function
- *
- * @param: lid, the LineID
- *
- * @param: callback, the callback function
- *
- * @return: blocking elements stored in arrays with i indices corresponding to i characters
- */
-exports.getBlocking = function( lid, callback ) {
-	if ( !lid ) return "NO RESULTS FOUND\n";
-	var sql = "SELECT characterline.lineid AS LineID, characterline.characterid AS CharacterID, characterinfo.name AS Name, \
-	blocking.originx AS OriginX, blocking.originy AS OriginY, blocking.originz AS OriginZ, blocking.destx AS DestX, blocking.desty AS DestY, blocking.destz AS DestZ, blocking.movementType AS MovementType, blocking.orientation AS Orientation \
-	FROM characterline \
-	INNER JOIN theatreappsuite.blocking ON characterline.BlockingID = blocking.BlockingID \
-	INNER JOIN theatreappsuite.characterinfo ON characterline.CharacterID = characterinfo.CharacterID \
-	WHERE LineID = ?";	
-	var inserts = [ lid ];
-	sql = mysql.format( sql, inserts);
-
-
-
-	
 	db.queryDB( conn, sql, function( res ) {
+		if (res.length > 0) {
+			sql = (`
+				SELECT characterline.LineID AS LineID, characterline.CharacterID AS CharacterID,
+				characterinfo.Name AS Name,
+				blocking.OriginX AS OriginX, blocking.OriginY AS OriginY, blocking.OriginZ AS OriginZ, blocking.DestX AS DestX, blocking.DestY AS DestY, blocking.DestZ AS DestZ, blocking.MovementType AS MovementType, blocking.Orientation AS Orientation
 
-		if ( res.length == 0) {
-			if ( !lid ) return "NO RESULTS FOUND\n";
-			sql = "SELECT characterline.characterid AS CharacterID, characterline.lineid AS LineID, characterinfo.name AS Name \
-			FROM characterline \
-			INNER JOIN theatreappsuite.characterinfo ON characterline.characterid = characterinfo.characterid \
-			WHERE LineID = ?";	
-			inserts = [ lid ];
-			sql = mysql.format( sql, inserts);
+				FROM line
+				JOIN theatreappsuite.characterline ON characterline.LineID = line.lineID
+				JOIN theatreappsuite.characterinfo ON characterinfo.CharacterID = characterline.CharacterID
+				JOIN theatreappsuite.blocking ON blocking.BlockingID = characterline.BlockingID
 
-			db.queryDB(conn, sql, function(res2) {
+				WHERE PlayID = ?
+				AND ActNum = ?
+				AND SceneNum = ?
+				AND LineNum <= ?
+				ORDER BY LineNum DESC
+			`);
+
+			inserts = [ res[0].PlayID, res[0].ActNum, res[0].SceneNum, res[0].LineNum ];
+			sql = mysql.format( sql, inserts );
+
+			db.queryDB( conn, sql, function( res2 ) {
 				callback(res2);
-			})
+			});
 		}
-
-		
 		else {
 			callback(res);
 		}
-
-
-
-	} );
+	});
 }
-
-
