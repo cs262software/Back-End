@@ -39,9 +39,10 @@ exports.getBlockingByLineID = function( lid, callback ) {
 	db.queryDB( conn, sql, function( res ) {
 		if (res.length > 0) {
 			sql = (`
-				SELECT characterline.LineID AS LineID, characterline.CharacterID AS CharacterID,
-				characterinfo.Name AS Name,
-				blocking.OriginX AS OriginX, blocking.OriginY AS OriginY, blocking.OriginZ AS OriginZ, blocking.DestX AS DestX, blocking.DestY AS DestY, blocking.DestZ AS DestZ, blocking.MovementType AS MovementType, blocking.Orientation AS Orientation
+				SELECT characterline.LineID AS LineID, characterline.CharacterID AS CharacterID, characterinfo.Name AS Name,
+				blocking.OriginX AS OriginX, blocking.OriginY AS OriginY, blocking.OriginZ AS OriginZ,
+				blocking.DestX AS DestX, blocking.DestY AS DestY, blocking.DestZ AS DestZ,
+				blocking.MovementType AS MovementType, blocking.Orientation AS Orientation
 
 				FROM line
 				JOIN theatreappsuite.characterline ON characterline.LineID = line.lineID
@@ -52,6 +53,7 @@ exports.getBlockingByLineID = function( lid, callback ) {
 				AND ActNum = ?
 				AND SceneNum = ?
 				AND LineNum <= ?
+
 				ORDER BY LineNum DESC
 			`);
 

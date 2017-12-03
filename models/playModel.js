@@ -80,7 +80,16 @@ exports.getScenesByActNum = function(playId, actNum, callback) {
  * @return: list of lines and ids and notes
  */
 exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
-	var sql = "SELECT LineID, LineNum, Text FROM line WHERE PlayID = ? AND ActNum = ? AND SceneNum = ?";
+	var sql = (`
+		SELECT line.LineID AS LineID, line.LineNum AS LineNum, line.Text AS Text,
+		characterinfo.Name AS CharacterSpeaking
+
+		FROM line
+		LEFT JOIN characterline ON (characterline.LineID = line.LineID AND characterline.Speaking = true)
+		LEFT JOIN characterinfo ON characterinfo.CharacterID = characterline.CharacterID
+
+		WHERE line.PlayID = ? AND line.ActNum = ? AND line.SceneNum = ?
+	`);
 	var inserts = [playID, actNum, sceneNum];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function(res) {

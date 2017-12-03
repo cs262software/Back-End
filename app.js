@@ -14,15 +14,14 @@ var notes = require('./routes/notes');
 var lights = require('./routes/lights');
 var sounds = require('./routes/sounds');
 
-// Make sure this is the same as the one used to generate the JWTs in userManager.js.
-var jwt = require('jsonwebtoken');
-var jwtPrivateKey = "OUelfRXH4bVdhVt9rAuKmG4aMsZvJDRmqs1uL9jH";
 // Define a middleware to handle authentication.
+var jwt = require('jsonwebtoken');
+// Make sure this is the same as the one used to generate the JWTs in userManager.js.
+var jwtPrivateKey = "OUelfRXH4bVdhVt9rAuKmG4aMsZvJDRmqs1uL9jH";
 function authenticationMiddleware (req, res, next) {
     // See if there is any token present in the http headers.
     var authToken = req.header("X-Auth-Token");
     if (!authToken) {
-        console.log("No Auth");
         // Unauthorized.
         res.status(401).send();
     } else {
@@ -30,7 +29,6 @@ function authenticationMiddleware (req, res, next) {
         jwt.verify(authToken, jwtPrivateKey, function(err, decoded) {
             // FYI: Token data can be retrieved as decoded.dataKey...
             if (err) {
-                console.log(err);
                 // Unauthorized.
                 res.status(401).send();
             } else {
