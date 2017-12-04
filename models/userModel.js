@@ -28,12 +28,8 @@ exports.createLogin = function(username, password, callback) {
 	var sql = "INSERT INTO `theatreappsuite`.`user` (`UserName`, `Password`) VALUES (?, ?);"
 	var inserts = [username, password];
 	sql = mysql.format(sql, inserts);
-	db.queryDB(conn, sql, function(err, res) {
-		if (err) {
-			callback(-1);
-		} else {
-			callback(res.insertId);
-		}
+	db.queryDB(conn, sql, function(res) {
+		callback(res.insertId);
 	});
 }
 
