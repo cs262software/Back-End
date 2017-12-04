@@ -10,8 +10,8 @@ var db = require( './dbModule' );
 var modelPass = require( './modelPasswords' );
 var DOMParser = require('xmldom').DOMParser
 var parseString = require('xml2js').parseString;
-var Promise = require('promise');
-require('promise/lib/rejection-tracking').enable();
+//var Promise = require('promise');
+//require('promise/lib/rejection-tracking').enable();
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
 	user     : 'root',
@@ -48,7 +48,7 @@ exports.inputXML = function( xmlFile ) {
 			var Characters = []
 			for (var c = 0; c < result["script"]["roles"][0]["character"].length; c++) {
 				var item = result["script"]["roles"][0]["character"][c];
-				console.log(item["$"]["name"])
+				//console.log(item["$"]["name"])
 				Characters.push([item["$"]["name"], null])
 			}
 			
@@ -74,27 +74,35 @@ exports.inputXML = function( xmlFile ) {
 					
 				}
 			}
-			var CharIds = []
+			global.CharIds = []
 			Characters.forEach(function (item, index, array) {
 				var sql = "INSERT INTO `characterinfo` (`Name`, `Description`) VALUES (?, ?)";
 				var inserts = item;
 				sql = mysql.format( sql, inserts );
-				//console.log(index + " " + item)
-				//var qdb = Promise.denodeify(db.queryDB);
-				var qdb = new Promise(function (resolve, reject) {
-					db.queryDB(conn, sql, function (res) { resolve(res) });
-				})
-				var res = new Promise(function (resolve, reject) {
-					qdb.then(function (res) {
-						return resolve(res["insertId"]);
-					});
+				console.log(sql)
+				
+				
+				db.queryDB(conn, sql, function (res2) { 
+					//console.log(global.CharIds)
+					//global.CharIds.push(res["insertId"])
+					
 				});
-				res.then(function (r) {
-					CharIds.push(r);
-					console.log(CharIds)
-				})
+				
+				//var qdb = Promise.denodeify(db.queryDB);
+//				var qdb = new Promise(function (resolve, reject) {
+//					
+//				})
+//				var res = new Promise(function (resolve, reject) {
+//					qdb.then(function (res) {
+//						return resolve(res["insertId"]);
+//					});
+//				});
+//				res.then(function (r) {
+//					CharIds.push(r);
+//					console.log(CharIds)
+//				})
 			});
-			while (CharIds.length != Characters.length) {  }
+			while (global.CharIds.length < 1) {}
 			console.log("===========\n\n" + CharIds);
 			return;
 			
