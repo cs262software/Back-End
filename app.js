@@ -81,6 +81,7 @@ app.use('/api/props', props);
 app.use('/api/notes', notes);
 app.use('/api/lights', lights);
 app.use('/api/sounds', sounds);
+app.use('/api/schedule', schedule);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -98,6 +99,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+var server = app.listen(3001, function() {
+    console.log('Ready on port %d', server.address().port);
 });
 
 module.exports = app;

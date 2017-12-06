@@ -108,7 +108,7 @@ exports.getCharactersBySceneNum = function(req, res) {
 				res.send(lines);
 			} else {
 				res.status(404).send({
-					error: "No lines found for given PlayID, ActNum, and SceneNum."
+					error: "No Characters found for given PlayID, ActNum, and SceneNum."
 				});
 			}
 		});

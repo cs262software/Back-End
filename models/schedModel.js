@@ -81,8 +81,7 @@ exports.getScenesByActNum = function(playId, actNum, callback) {
  */
 exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
 	var sql = (`
-		SELECT line.LineID AS LineID, line.LineNum AS LineNum, line.Text AS Text,
-		characterinfo.Name AS CharacterSpeaking
+		SELECT DISTINCT characterinfo.Name AS CharacterInScene
 
 		FROM line
 		LEFT JOIN characterline ON (characterline.LineID = line.LineID AND characterline.Speaking = true)
