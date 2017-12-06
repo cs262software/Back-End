@@ -4,55 +4,111 @@
 
 'use strict';
 
-var playModel = require("../models/playModel.js");
+//Initialize globals
+var playModel = require('../models/playModel');
 
 /**
- * This is a prototype function that returns a default example play.
- * This should be replaced with an actual database controller
+ * getAllPlays returns the list of play scripts with their names and ids
+ *
+ * @param: req, res
+ *
+ * @return: List of scripts
  */
-
-function getPlay(id) {
-   return "<?xml version\"1.0\"?><play title=\"The Interview\" author=\"Patrick M. Bailey\" license=\"2011\"><roles><character id='1' name='John'/><character id='12' name='Princess'/></roles><act id='2'>t<scene id='2' title='Confrontation'><deplayion>In <em>the</em> castle</deplayion><line id='ABC1234'><!-- line id deterministically generated --><text><em>Princess enters the scene</em></text></line><line id='FEFE332' characterID='12'><text>But daddy, I <em>love</em> him!<!-- can include em, strong tags.--></text></line><!--</scene></act> XML MAY be well-formed (or not) --></play>"
+exports.getAllPlays = function( req, res ) {
+    playModel.getAllPlays(function(playList) {
+    	res.send(playList);
+    });
 }
 
-
-/**
- * getPlay returns the xml of the play associated with a certain id
+/*
+ * getActsByPlayID returns the number of acts in the play if the play exists
  *
- * @param: req.query.id, the id
+ * @param: req.param.playid, the PlayID
  *
- * @return: Requested play xml
+ * @return: The number of acts for that play
  */
-exports.getPlay = function(req, res) {
-	var id = req.query.id;
 
-	res.send(getPlay(req.id));
-   
+exports.getActsByPlayID = function(req, res) {
+    var play = req.params.PlayID;
+
+    if (!play) {
+        res.send({"status": "error", "message": "missing PlayID number as URL parameter"});
+        return;
+    }
+
+    playModel.getActsByPlayID(play, function(actAmount) {
+        if (actAmount === "-1") {
+            res.send({"status": "error", "message": "invalid PlayID"});
+            return;
+        }
+
+        let acts = [];
+
+        for (let act = 1; act <= actAmount; act++) {
+            acts.push({"ActNum": act});
+        }
+
+        res.send(acts);
+    });
+}
+
+/*
+ * getScenesByActNum returns the number of scenes in the play and act if the play and act exist
+ *
+ * @param: req.params.PlayID, the PlayID
+ * @param: req.params.ActNum, the ActNum
+ *
+ * @return: The number of scenes in that act and play
+ */
+
+exports.getScenesByActNum = function(req, res) {
+    var play = req.params.PlayID;
+    var act = req.params.ActNum;
+
+    if (!play || !act) {
+        res.send({"status": "error", "message": "missing PlayID or ActNum as URL parameters"});
+        return;
+    }
+
+    playModel.getScenesByActNum(play, act, function(sceneAmount) {
+        if (sceneAmount === "-1") {
+            res.send({"status": "error", "message": "invalid PlayID or ActNum"});
+            return;
+        }
+
+        let scenes = [];
+
+        for (let scene = 1; scene <= sceneAmount; scene++) {
+            scenes.push({"SceneNum": scene});
+        }
+
+        res.send(scenes);
+    });
 }
 
 /**
- * getLine returns the lines and ids of lines associated with a play, act and scene
+ * getLineBySceneNum returns the lines and ids of lines associated with a play, act and scene
  *
- * @param: req.query.playID
- * @param: req.query.actNum
- * @param: req.query.sceneNum
+ * @param: req.params.PlayID
+ * @param: req.params.ActNum
+ * @param: req.params.SceneNum
  *
  * @return: Lines and IDs in JSON obj
  */
-exports.getLines = function(req, res) {
-	let playID = req.query.playID;
-	let actNum = req.query.actNum;
-	let sceneNum = req.query.sceneNum;
+exports.getLinesBySceneNum = function(req, res) {
+	let playID = req.params.PlayID;
+	let actNum = req.params.ActNum;
+	let sceneNum = req.params.SceneNum;
 
 	if (!playID || !actNum || !sceneNum) {
-		res.status(400).send({ error: "Missing playID, actNum, or sceneNum"});
+		res.status(400).send({ error: "Missing PlayID, ActNum, or SceneNum as URL parameters"});
 	} else {
-		playModel.getLines(playID, actNum, sceneNum, function(lines) {
+		playModel.getLinesBySceneNum(playID, actNum, sceneNum, function(lines) {
 			if (lines.length > 0) {
 				res.send(lines);
 			} else {
 				res.status(404).send({
-					error: "No lines found for given PlayID, actNum, and sceneNum."
+					error: "No lines found for given PlayID, ActNum, and SceneNum."
 				});
 			}
 		});
