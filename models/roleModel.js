@@ -19,16 +19,16 @@ var conn  = mysql.createConnection( {
  * getFilePath searches db for role path if it is viewable by user
  *
  * @param: uid, user id
- * @param: rid, role id
+ * @param: pid, play id
  *
  * @return: role path
  */
-exports.getRolePath = function( userID, callback ) {
+exports.getRolePath = function( userID, playID, callback ) {
 	if ( !userID ) return "NO RESULTS FOUND\n";
 	var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
 	var inserts = [ userID, playID ];
     sql = mysql.format(sql, inserts);
-    var obj = {};
+    //var obj = {};
     db.queryDB(conn, sql, function (res) {
         /*var rolePath = "RolePath";
         obj[rolePath] = res[0].RolePath;

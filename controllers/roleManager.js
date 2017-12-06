@@ -16,9 +16,10 @@ var fs = require( "fs" );
  * @return: Requested file content
  */
 exports.getRoles = function( req, res ) {
-	var uid = req.query.uid;
-	var fid = "roles";
-	var rolePath = roleModel.getRolePath( uid, rid );
+    var uid = req.query.uid;
+    var pid = req.query.pid;
+	//var fid = "roles";
+	var rolePath = roleModel.getRolePath( uid, pid );
 
 	fs.stat( rolePath, function( err, stat ) {
 		if( err == null ) {
@@ -26,7 +27,7 @@ exports.getRoles = function( req, res ) {
 			res.send( content );
 		} else if( err.code == 'ENOENT' ) {
 			console.log( err.code );
-			res.send( 'FILE DOES NOT EXIST\nuid: ' + uid + "\nfid: " + rid );
+			res.send( 'FILE DOES NOT EXIST\nuid: ' + uid + "\npid: " + pid );
 		} else {
 			console.log( 'FILE ERROR: ', err.code );
 		}
