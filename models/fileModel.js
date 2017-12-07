@@ -14,6 +14,21 @@ var conn  = mysql.createConnection( {
 	password : modelUser.password,
 	database : 'theatreappsuite',
 } );
+var fs = require ( 'fs' );
+
+exports.getAllFiles = function(callback) {
+	var fileList = [];
+	var files = fs.readdirSync('./parsing/output/');
+
+	for (var i in files) {
+		if ( !files.hasOwnProperty(i) ) continue;
+		var name = './parsing/output' + '/' + files[i];
+		if ( !fs.statSync(name).isDirectory() ) {
+			fileList.push(name);
+		}
+	}
+	callback(fileList);
+}
 
 /**
  * getFilePath searches db for file path if it is viewable by user
