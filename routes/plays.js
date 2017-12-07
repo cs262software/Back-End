@@ -29,4 +29,8 @@ router.get('/:PlayID/:ActNum/:SceneNum/lines', function(req, res) {
 	playManager.getLinesBySceneNum(req, res);
 });
 
+router.get('/actors/:PlayID/:CharacterID', function(req, res) {
+	playManager.getLinesByPlayAndCharacter(req, res);
+});
+
 module.exports = router;

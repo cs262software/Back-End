@@ -98,3 +98,30 @@ exports.getLinesBySceneNum = function(req, res) {
 		});
 	}
 }
+
+/**
+ * getLineByPlayAndCharacter returns the lines and ids of lines associated with a play, and character
+ *
+ * @param: req.params.PlayID
+ * @param: req.params.CharacterID
+ *
+ * @return: Lines and IDs in JSON obj
+ */
+exports.getLinesByPlayAndCharacter = function(req, res) {
+	let playID = req.params.PlayID;
+	let characterID = req.params.CharacterID;
+
+	if (!playID || !characterID) {
+		res.status(400).send({ error: "Missing PlayID, or CharacterID as URL parameters"});
+	} else {
+		playModel.getLinesByPlayAndCharacter(playID, characterID, function(lines) {
+			if (lines.length > 0) {
+				res.send(lines);
+			} else {
+				res.status(404).send({
+					error: "No lines found for given PlayID, and CharacterID."
+				});
+			}
+		});
+	}
+}

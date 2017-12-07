@@ -12,4 +12,8 @@ router.get( '/', function( req, res, next ) {
 	fileManager.getFile( req, res )
 } );
 
+router.get('/all', function( req, res, next) {
+	fileManager.getAllFiles( req, res )
+} );
+
 module.exports = router;

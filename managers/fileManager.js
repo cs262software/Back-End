@@ -22,7 +22,7 @@ exports.getFile = function( req, res ) {
 		filePath = "../" + filePath;
 		fs.stat( filePath, function( err, stat ) {
 			if( err == null ) {
-				var content = fs.readFileSync( filePath, "utf-8" ); 
+				var content = fs.readFileSync( filePath, "utf-8" );
 				res.send( content );
 			} else if( err.code == 'ENOENT' ) {
 				console.log( err.code );
@@ -32,4 +32,10 @@ exports.getFile = function( req, res ) {
 			}
 		} );
 	} );
+}
+
+exports.getAllFiles = function( req, res ) {
+	fileModel.getAllFiles(function(fileList) {
+		res.send(fileList);
+	});
 }
