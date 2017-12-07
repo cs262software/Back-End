@@ -18,6 +18,32 @@ var conn  = mysql.createConnection( {
 } );
 
 /**
+ * getCharactersByPlay returns a list of character for a given play.
+ *
+ * @param: PlayID
+ *
+ * @param: callback, the callback function
+ *
+ * @return: a list of character names and ids
+ */
+exports.getCharactersByPlay = function( PlayID, callback ) {
+	var sql = (`
+		SELECT DISTINCT ci.Name, ci.CharacterID
+		FROM characterinfo ci
+		INNER JOIN characterline cl ON ci.CharacterID = cl.CharacterID
+		INNER JOIN line l ON cl.LineID = l.LineID
+		INNER JOIN play p ON l.PlayID = p.PlayID
+		WHERE p.PlayID = ?
+	`);
+	var inserts = [ PlayID ];
+	sql = mysql.format( sql, inserts );
+
+	db.queryDB( conn, sql, function( res ) {
+		callback(res);
+	});
+}
+
+/**
  * getCharactersByScene returns a list of character for a given scene.
  *
  * @param: PlayID, ActNum, SceneNum

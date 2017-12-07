@@ -98,6 +98,30 @@ exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
 }
 
 /**
+ * getLinesByPlayAndCharacter gets the lines and ids from a play given playID, and characterID
+ *
+ * @param: playID
+ * @param: characterID
+ * @param: callback (function)
+ *
+ * @return: list of lines and ids
+ */
+exports.getLinesByPlayAndCharacter = function(playID, characterID, callback) {
+	var sql = (`
+		SELECT ActNum, SceneNum, Text
+		FROM line l
+		INNER JOIN characterline cl ON l.LineID = cl.LineID
+		WHERE l.PlayID = ? AND cl.CharacterID = ?
+		ORDER BY l.ActNum, l.SceneNum
+	`);
+	var inserts = [playID, characterID];
+	sql = mysql.format(sql, inserts);
+	db.queryDB(conn, sql, function(res) {
+		callback(res);
+	});
+}
+
+/**
  * getNote gets the DirectorsNote of a given line
  *
  * @param: lineID

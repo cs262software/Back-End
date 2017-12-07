@@ -18,7 +18,7 @@ router.post( '/:LineID', function( req, res, next ) {
 	blockingManager.createBlocking( req, res );
 });
 
-// update blocing instruction
+// update blocking instruction
 router.put( '/:LineID', function( req, res, next) {
 	blockingManager.updateBlocking( req, res );
 });
