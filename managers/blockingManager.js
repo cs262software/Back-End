@@ -24,21 +24,36 @@ exports.getBlockingByLineID = function( req, res ) {
 		blockingModel.getBlockingByLineID(lid, function(blocking) {
 			res.send(blocking);
 		});
+	}
+}
 
-		// blockingModel.getBlocking( lid, function(characterid, lineid, originx, originy, destx, desty, movementtype, orientation) {
-		// 	res.json({
-		// 		CharacterID: characterid,
-		// 		LineID: lid,
-		// 		BlockingID: blockingid,
-		// 		OriginX: originx,
-		// 		OriginY: originy,
-		// 		OriginZ: originz,
-		// 		DestX: destx,
-		// 		DestY: desty,
-		// 		DestZ: destz,
-		// 		MovementType: movementtype,
-		// 		Orientation: orientation
-		// 	})
-		//});
+
+/*
+ * updateBlocking updates blocking instructions for each instruction (associated with a character) for given lineid
+ * 
+ * @params...
+ * 
+ * 
+ * 
+ */
+
+exports.createBlocking = function( req, res ) {
+	var lid = req.params.LineID;
+	if( !lid ) {
+		res.status(400).send({ error: "Missing lineID."});
+		return;
+	}
+	var blockingUpdateArray = req.body.blockingUpdateArray;
+	if(!blockingUpdateArray) {
+		res.status(400).send( { error: "No blocking data sent."});	// may change to a 200 okay
+		return;
+	}
+	for (let i=0; i<blockingUpdateArray.length; i++) {
+		let currDataSet = blockingUpdateArray[i];
+		blockingModel.createBlocking(lid, currDataSet, function(result) {
+			
+		});		// res/callback...?
+
+		res.status(200).send();
 	}
 }

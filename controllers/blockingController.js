@@ -24,22 +24,26 @@ exports.getBlocking = function( req, res ) {
 		blockingModel.getBlocking(lid, function(blocking) {
 			res.send(blocking);
 		} );
-		// blockingModel.getBlocking( lid, function(characterid, lineid, originx, originy, destx, desty, movementtype, orientation) {
-		// 	res.json({
-		// 		CharacterID: characterid,
-		// 		LineID: lid,
-		// 		BlockingID: blockingid,
-		// 		OriginX: originx,
-		// 		OriginY: originy,
-		// 		OriginZ: originz,
-		// 		DestX: destx,
-		// 		DestY: desty,
-		// 		DestZ: destz,
-		// 		MovementType: movementtype,
-		// 		Orientation: orientation
-		// 	})
-		//});
+		
 	}	
 }
 
 
+exports.updateBlocking = function( req, res ) {
+	var lid = req.query.LineID;
+	if( !lid ) {
+		res.status(400).send({ error: "Missing lineID."});
+	} else {
+		for(var updateLine in req) {
+			lid = update.query.LineID;
+			var charID = update.query.characterID;
+			var name = update.query.Name;
+			var destx = updateLine.query.DestX;
+			var desty = updateLine.query.DestY;
+			var destz = updateLine.query.DestZ;
+			blockingModel.updateBlocking(lid, charID, name, destx, desty, destz, function(success) {
+				res.send(success);
+			} );
+		}
+	}
+}

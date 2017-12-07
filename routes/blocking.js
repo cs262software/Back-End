@@ -18,10 +18,10 @@ router.post( '/:LineID', function( req, res, next ) {
 	blockingManager.createBlocking( req, res );
 });
 
-// update blocing instruction
-router.put( '/:LineID', function( req, res, next) {
-	blockingManager.updateBlocking( req, res );
-});
+// update blocking instruction
+// router.put( '/:LineID', function( req, res, next) {
+//	blockingManager.updateBlocking( req, res );
+//});
 
 // delete blocking instruction
 router.delete( '/:LineID', function( req, res, next ) {
