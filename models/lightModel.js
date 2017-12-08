@@ -42,7 +42,7 @@ exports.getLightsInfo = function(lineId, callback) {
 //             var status = res[0].Status;
 
 //            callback(lightId, name, type, userId, location, status);
-              callbcak(res);
+              callback(res);
         }
     });
 }
