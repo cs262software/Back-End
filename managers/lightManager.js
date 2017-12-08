@@ -33,3 +33,31 @@ exports.getLightsInfo = function(req, res) {
         }
     });
 }
+
+exports.updateLight = function(req, res) {
+	let LightID = req.body.LightID;
+	let Name = req.body.Name;
+	let Type = req.body.Type;
+	let LineID = req.body.LineID;
+	let UserID = req.body.UserID;
+	let Location = req.body.Location;
+	let Status = req.body.Status;
+
+	lightModel.updateLight(LightID, Name, Type, LineID, UserID, Location, Status, function(success) {
+		res.send({success});
+	});
+}
+
+exports.addLight = function(req, res) {
+	let LightID = req.body.LightID;
+	let Name = req.body.Name;
+	let Type = req.body.Type;
+	let LineID = req.body.LineID;
+	let UserID = req.body.UserID;
+	let Location = req.body.Location;
+	let Status = req.body.Status;
+
+	lightModel.addLight(LightID, Name, Type, LineID, UserID, Location, Status, function(success) {
+		res.send({success});
+	});
+}

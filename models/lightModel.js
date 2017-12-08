@@ -34,15 +34,27 @@ exports.getLightsInfo = function(lineId, callback) {
             callback("-1");
             return;
         } else {
-//             var lightId = res[0].LightID;
-//             var name = res[0].Name;
-//             var type = res[0].Type;
-//             var userId = res[0].UserID;
-//             var location = res[0].Location;
-//             var status = res[0].Status;
-
-//            callback(lightId, name, type, userId, location, status);
               callback(res);
         }
     });
+}
+
+exports.updateLight = function(LightID, Name, Type, LineID, UserID, Location, Status, callback) {
+	var sql = "UPDATE light SET Name=?, Type=? WHERE LightID=?; UPDATE lightingcue SET LineID=?, UserID=?, Location=?, Status=? WHERE LightID=?";
+	var inserts = [Name, Type, LightID, LineID, UserID, Location, Status, LightID];
+	sql = mysql.format(sql, inserts);
+
+	db.queryDB(conn, sql, function(res) {
+		callback(res.affectedRows == 1);
+	});
+}
+
+exports.addLight = function(LightID, Name, Type, LineID, UserID, Location, Status, callback) {
+	var sql = "INSERT INTO light (LightID, Name, Type) VALUES (?, ?, ?); INSERT INTO lightingcue (LightID, LineID, UserID, Location, Status) VALUES (?, ?, ?, ?, ?);
+	var inserts = [LightID, Name, Type, LightID, LineID, UserID, Location, Status];
+	sql = mysql.format(sql, inserts);
+
+	db.queryDB(conn, sql, function(res) {
+		callback(res.affectedRows == 1);
+	});
 }
