@@ -33,15 +33,6 @@ exports.getBlockingByLineID = function( req, res ) {
 }
 
 
-<<<<<<< Updated upstream
-/*
- * updateBlocking updates blocking instructions for each instruction (associated with a character) for given lineid
- *
- * @params...
- *
- *
- *
-=======
 /**
  * createBlocking
  * 
@@ -52,7 +43,6 @@ exports.getBlockingByLineID = function( req, res ) {
  * 
  * @param: req.body.blockingUpdateArray, array containing updates/new blocking instructions
  * 
->>>>>>> Stashed changes
  */
 
 exports.createBlocking = function( req, res ) {
@@ -69,13 +59,7 @@ exports.createBlocking = function( req, res ) {
 	for (let i=0; i<blockingUpdateArray.length; i++) {
 		let currDataSet = blockingUpdateArray[i];
 		blockingModel.createBlocking(lid, currDataSet, function(result) {
-<<<<<<< Updated upstream
-			console.log(result);
 		});
-
-=======
-		});
->>>>>>> Stashed changes
 		res.status(200).send();
 	}
 }

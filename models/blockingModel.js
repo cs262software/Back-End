@@ -92,13 +92,8 @@ exports.createBlocking = function (lid, currDataSet, callback) {
 	var inserts = [charID, lid];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function (res) {
-<<<<<<< Updated upstream
-		if( res.length == 0 ) {
-			console.log("No LID");
-=======
 		// case: blocking instructions don't already exist for LineID, character not already associated with line in db
 		if( res.length == 0) {
->>>>>>> Stashed changes
 			var sql1 = "INSERT INTO blocking (DestX, DestY, DestZ, OriginX, OriginY, OriginZ) VALUES (?,?,?,0,0,0);"
 			var inserts1 = [destx, desty, destz];
 			sql1 = mysql.format(sql1, inserts1);
@@ -113,20 +108,6 @@ exports.createBlocking = function (lid, currDataSet, callback) {
 			});
 		}
 		else {
-<<<<<<< Updated upstream
-			if ( res[0].BlockingID == null ) {
-				console.log("LID, NO BID");
-				var sql3 = "INSERT INTO blocking (DestX, DestY, DestZ, OriginX, OriginY, OriginZ) VALUES (?,?,?,0,0,0);"
-				var inserts3 = [destx, desty, destz];
-				sql3 = mysql.format(sql3, inserts3);
-				db.queryDB(conn, sql3, function (res3) {
-					var blockingID = res3.insertId;
-					var sql4 = "UPDATE characterline SET BlockingID = ? WHERE CharacterID = ? AND LineID = ?;"
-					var insert4 = [blockingID, charID, lid];
-					sql4 = mysql.format(sql4, insert4);
-					db.queryDB(conn, sql4, function (res4) {
-						callback(res4);
-=======
 			// case: character already associated with line, but has no (old) blocking instruction
 			if (res[0].BlockingID == null) {
 				var sql1 = "INSERT INTO blocking (DestX, DestY, DestZ, OriginX, OriginY, OriginZ) VALUES (?,?,?,0,0,0);"
@@ -139,7 +120,6 @@ exports.createBlocking = function (lid, currDataSet, callback) {
 					sql2 = mysql.format(sql2, insert2);
 					db.queryDB(conn, sql2, function (res2) {
 						callback(res2);
->>>>>>> Stashed changes
 					});
 				});
 			}
