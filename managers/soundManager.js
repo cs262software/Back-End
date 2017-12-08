@@ -25,9 +25,9 @@ exports.getSoundsInfo = function(req, res) {
 
     soundModel.getSoundsInfo(line, function(soundId, name, description, userId, note) {
         if (soundId === "-1") {
-            res.send({"status": "error", "message": "no sounds cue info for that line"});
+            res.send([{"status": "error", "message": "no sounds cue info for that line"}]);
         } else {
-            res.send({"SoundID": soundId, "Name": name, "Description": description, "UserID": userId, "Note": note});
+            res.send([{"SoundID": soundId, "Name": name, "Description": description, "UserID": userId, "Note": note}]);
         }
     });
 }

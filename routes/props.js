@@ -9,7 +9,7 @@ var router = express.Router();
 var propManager = require( '../managers/propManager' );
 
 router.get( '/:LineID', function( req, res ) {
-	propsManager.getProps( req, res )
+	propManager.getProps( req, res )
 });
 
 module.exports = router;

@@ -16,7 +16,6 @@ var propModel = require('../models/propModel');
  */
 exports.getProps = function( req, res ) {
 	let lineID = req.params.LineID;
-
 	if (!lineID ) {
 		res.status(400).send({ error: "Missing LineID as URL parameters" });
 	} else {

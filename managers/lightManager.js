@@ -25,9 +25,9 @@ exports.getLightsInfo = function(req, res) {
 
     lightModel.getLightsInfo(line, function(lightId, name, type, userId, location, status) {
         if (lightId === "-1") {
-            res.send({"status": "error", "message": "no lights cue info for that line"});
+            res.send([{"status": "error", "message": "no lights cue info for that line"}]);
         } else {
-            res.send({"LightID": lightId, "Name": name, "Type": type, "UserID": userId, "Location": location, "Status": status});
+            res.send([{"LightID": lightId, "Name": name, "Type": type, "UserID": userId, "Location": location, "Status": status}]);
         }
     });
 }
