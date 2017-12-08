@@ -50,7 +50,7 @@ exports.updateLight = function(LightID, Name, Type, LineID, UserID, Location, St
 }
 
 exports.addLight = function(LightID, Name, Type, LineID, UserID, Location, Status, callback) {
-	var sql = "INSERT INTO light (LightID, Name, Type) VALUES (?, ?, ?); INSERT INTO lightingcue (LightID, LineID, UserID, Location, Status) VALUES (?, ?, ?, ?, ?);
+	var sql = "INSERT INTO light (LightID, Name, Type) VALUES (?, ?, ?); INSERT INTO lightingcue (LightID, LineID, UserID, Location, Status) VALUES (?, ?, ?, ?, ?);"
 	var inserts = [LightID, Name, Type, LightID, LineID, UserID, Location, Status];
 	sql = mysql.format(sql, inserts);
 
