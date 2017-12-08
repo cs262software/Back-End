@@ -15,11 +15,22 @@ var fs = require('fs')
  * @return: Requested script xml
  */
 exports.inputXML = function( req, res ) {
-	var id = req.query.id;
+	var file = 'parsing/output/' + req.query.file;
 	
-	var xml = fs.readFileSync('parsing/output/test.xml')
-	xml = xml.toString();
-	//console.log(xml)
-	res.send(model.inputXML(xml));
+	
+	
+	fs.stat( file, function( err, stat ) {
+			if( err == null ) {
+				var xml = fs.readFileSync(file)
+				xml = xml.toString();
+				res.send(model.inputXML(xml));
+			} else if( err.code == 'ENOENT' ) {
+				console.log( err.code );
+				res.send( 'FILE DOES NOT EXIST\nPlayID: ' + file );
+			} else {
+				console.log( 'FILE ERROR: ', err.code );
+			}
+	});
+	
    
 }
