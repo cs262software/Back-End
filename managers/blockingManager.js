@@ -30,11 +30,11 @@ exports.getBlockingByLineID = function( req, res ) {
 
 /*
  * updateBlocking updates blocking instructions for each instruction (associated with a character) for given lineid
- * 
+ *
  * @params...
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 exports.createBlocking = function( req, res ) {
@@ -51,8 +51,8 @@ exports.createBlocking = function( req, res ) {
 	for (let i=0; i<blockingUpdateArray.length; i++) {
 		let currDataSet = blockingUpdateArray[i];
 		blockingModel.createBlocking(lid, currDataSet, function(result) {
-			
-		});		// res/callback...?
+			console.log(result);
+		});
 
 		res.status(200).send();
 	}

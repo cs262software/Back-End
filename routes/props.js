@@ -12,4 +12,10 @@ router.get( '/:LineID', function( req, res ) {
 	propManager.getProps( req, res )
 });
 
+// This post requires body to look like
+// { LineID: #, note: "XXX" }
+router.post( '/update', function( req, res ) {
+	propManager.propMovement( req, res );
+});
+
 module.exports = router;
