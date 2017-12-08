@@ -26,7 +26,7 @@ router.get('/:PlayID/:ActNum/scenes', function(req, res) {
 });
 
 router.get('/:PlayID/:ActNum/:SceneNum/lines', function(req, res) {
-	schedManager.getCheractersBySceneNum(req, res);
+	schedManager.getCharactersBySceneNum(req, res);
 });
 
 module.exports = router;
