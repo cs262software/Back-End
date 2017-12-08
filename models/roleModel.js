@@ -10,8 +10,8 @@ var db = require( './dbModule' );
 var modelPass = require( './modelPasswords' );
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'andrew',
-	password : modelPass.roleModelPass,
+	user     : 'theatreSuiteUser',
+	password : modelPass.fileModelPass,
 	database : 'theatreappsuite',
 } );
 
@@ -25,11 +25,11 @@ var conn  = mysql.createConnection( {
  */
 exports.getRolePath = function( userID, playID, callback ) {
 	if ( !userID ) return "NO RESULTS FOUND\n";
-	var sql = "SELECT RolePath FROM permissions WHERE userID = ? AND playID = ?";
+    var sql = "SELECT Director, StageManager, AsstStageManager, Light, Sound, StageCrew, Actor FROM permissions WHERE userID = ? AND playID = ?";
 	var inserts = [ userID, playID ];
     sql = mysql.format(sql, inserts);
     db.queryDB(conn, sql, function (res) {
-       
+        
         callback(res ? res : "NO RESULTS FOUND\n");
     });
 }

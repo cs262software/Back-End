@@ -7,7 +7,7 @@
  * certain permissions in the db
  */
 
-var fileModelPass = "[Password Here]";
+var fileModelPass = "password";
 exports.fileModelPass = fileModelPass;
 
 // [More passwords go here]

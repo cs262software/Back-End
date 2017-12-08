@@ -15,21 +15,13 @@ var fs = require( "fs" );
  *
  * @return: Requested file content
  */
-exports.getRoles = function( req, res ) {
+exports.getRoles = function (req, res) {
     var uid = req.query.uid;
     var pid = req.query.pid;
-	//var fid = "roles";
-	var rolePath = roleModel.getRolePath( uid, pid );
+    
+    var rolePath = roleModel.getRolePath(uid, pid, function (roles) {
+        
+        res.send(roles);
 
-	fs.stat( rolePath, function( err, stat ) {
-		if( err == null ) {
-			var content = fs.readFileSync( filePath, "utf-8" ); 
-			res.send( content );
-		} else if( err.code == 'ENOENT' ) {
-			console.log( err.code );
-			res.send( 'FILE DOES NOT EXIST\nuid: ' + uid + "\npid: " + pid );
-		} else {
-			console.log( 'FILE ERROR: ', err.code );
-		}
-	} );
+    });
 }
