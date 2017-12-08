@@ -31,17 +31,18 @@ exports.getLightsInfo = function(lineId, callback) {
 
     db.queryDB(conn, sql, function(res) {
         if ( !res[0] || res.length === 0 ) {
-            callback("-1", "-1", "-1", "-1", "-1", "-1");
+            callback("-1");
             return;
         } else {
-            var lightId = res[0].LightID;
-            var name = res[0].Name;
-            var type = res[0].Type;
-            var userId = res[0].UserID;
-            var location = res[0].Location;
-            var status = res[0].Status;
+//             var lightId = res[0].LightID;
+//             var name = res[0].Name;
+//             var type = res[0].Type;
+//             var userId = res[0].UserID;
+//             var location = res[0].Location;
+//             var status = res[0].Status;
 
-            callback(lightId, name, type, userId, location, status);
+//            callback(lightId, name, type, userId, location, status);
+              callbcak(res);
         }
     });
 }
