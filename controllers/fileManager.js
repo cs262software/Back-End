@@ -17,20 +17,17 @@ var fs = require( "fs" );
  * @return: Requested file content
  */
 exports.getFile = function( req, res ) {
-	var playID = req.query.playID;
-	fileModel.getFilePath( playID, function( filePath ) {
-		filePath = "../" + filePath;
-		fs.stat( filePath, function( err, stat ) {
-			if( err == null ) {
-				var content = fs.readFileSync( filePath, "utf-8" );
-				res.send( content );
-			} else if( err.code == 'ENOENT' ) {
-				console.log( err.code );
-				res.send( 'FILE DOES NOT EXIST\nPlayID: ' + playID );
-			} else {
-				console.log( 'FILE ERROR: ', err.code );
-			}
-		} );
+	var filePath = req.query.filePath;
+	fs.stat( filePath, function( err, stat ) {
+		if( err == null ) {
+			var content = fs.readFileSync( filePath, "utf-8" );
+			res.send( content );
+		} else if( err.code == 'ENOENT' ) {
+			console.log( err.code );
+			res.send( 'FILE DOES NOT EXIST\nPath: ' + filePath );
+		} else {
+			console.log( 'FILE ERROR: ', err.code );
+		}
 	} );
 }
 
