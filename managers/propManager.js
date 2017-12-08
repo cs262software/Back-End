@@ -47,7 +47,7 @@ exports.propMovement = function ( req, res ) {
 						});
 		} else {
 			propModel.updatePropMovement(lineID, propID, movementDesc, newPropID, function(success) {
-				res.send(success);
+				res.send({success});
 			});
 		}
 	}
