@@ -7,14 +7,17 @@
 // Initialize globals
 var mysql = require( 'mysql' );
 var db = require( './dbModule' );
-var modelPass = require( './modelPasswords' );
+var modelUser = require( './modelUser' );
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'andrew',
-	password : modelPass.fileModelPass,
+	user     : modelUser.username,
+	password : modelUser.password,
 	database : 'theatreappsuite',
 } );
 
+exports.getAllFiles = function(callback) {
+		var sql = "SELECT FROM theatreappsuite.file";
+}
 /**
  * getFilePath searches db for file path if it is viewable by user
  *
