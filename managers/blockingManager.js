@@ -1,4 +1,4 @@
-/*
+/**
  * blockingController.js contains the functions related to blocking tasks
  */
 
@@ -7,13 +7,18 @@
 // Initialize globals
 var blockingModel = require('../models/blockingModel');
 
-/*
- * getBlocking returns the blocking instructions for given lineid
+/**
+ * getBlockingByLineID
+ * 
+ * returns the blocking instructions for given LineID, as well as the
+ * last instruction for each character blocked (but not necessary changing
+ * their blocking) before specified line
  *
- * @param: req.line.LineID, the line id
+ * @param: req.params.LineID, the line id
  *
- * @return: a json object whose keys contain arrays of values corresponding to all
- *			blocking instructions and info for all characters associated with a given lineid
+ * @return: blocking, (json) all instructions in db blocking table associated with given LineID
+ * 				JSON keys:
+ * 					LineID, CharacterID, Name, OriginX, OriginY, OriginZ, DestX, DestY, DestZ, MovementType, Orientation
  */
 
 exports.getBlockingByLineID = function( req, res ) {
@@ -28,6 +33,7 @@ exports.getBlockingByLineID = function( req, res ) {
 }
 
 
+<<<<<<< Updated upstream
 /*
  * updateBlocking updates blocking instructions for each instruction (associated with a character) for given lineid
  *
@@ -35,6 +41,18 @@ exports.getBlockingByLineID = function( req, res ) {
  *
  *
  *
+=======
+/**
+ * createBlocking
+ * 
+ * creates and/or updates blocking instructions in database depending on
+ * whether an instruction already exists for given characters and given line
+ * 
+ * @param: req.params.LineID, the line id
+ * 
+ * @param: req.body.blockingUpdateArray, array containing updates/new blocking instructions
+ * 
+>>>>>>> Stashed changes
  */
 
 exports.createBlocking = function( req, res ) {
@@ -51,9 +69,13 @@ exports.createBlocking = function( req, res ) {
 	for (let i=0; i<blockingUpdateArray.length; i++) {
 		let currDataSet = blockingUpdateArray[i];
 		blockingModel.createBlocking(lid, currDataSet, function(result) {
+<<<<<<< Updated upstream
 			console.log(result);
 		});
 
+=======
+		});
+>>>>>>> Stashed changes
 		res.status(200).send();
 	}
 }
