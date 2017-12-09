@@ -33,4 +33,12 @@ router.get('/actors/:PlayID/:CharacterID', function(req, res) {
 	playManager.getLinesByPlayAndCharacter(req, res);
 });
 
+router.get('/directorsnote/:LineID', function(req, res) {
+	playManager.getNoteByLineID(req, res);
+});
+
+router.post('/directorsnote/:LineID', function(req, res) {
+	playManager.updateNote(req, res);
+});
+
 module.exports = router;

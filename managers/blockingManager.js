@@ -51,9 +51,8 @@ exports.createBlocking = function( req, res ) {
 	for (let i=0; i<blockingUpdateArray.length; i++) {
 		let currDataSet = blockingUpdateArray[i];
 		blockingModel.createBlocking(lid, currDataSet, function(result) {
-			console.log(result);
+			//console.log(result);
 		});
-
-		res.status(200).send();
 	}
+	res.status(200).send();
 }

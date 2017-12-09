@@ -125,3 +125,36 @@ exports.getLinesByPlayAndCharacter = function(req, res) {
 		});
 	}
 }
+
+exports.getNoteByLineID = function( req, res ) {
+	let lineID = req.params.LineID;
+	if (!lineID) {
+		res.status(400).send({ error: "Missing LineID as URL parameter."});
+	} else {
+		playModel.getNoteByLineID(lineID, function(notes) {
+			res.send(notes);
+		});
+	}
+}
+
+exports.updateNote = function( req, res ) {
+    var lineID = req.params.LineID;
+	if( !lineID ) {
+		res.status(400).send({ error: "Missing LineID as URL parameter."});
+		return;
+	}
+
+    var directorsNote = req.body.directorsNote;
+	if(!directorsNote) {
+		res.status(400).send({ error: "No directors note data sent."});	// may change to a 200 okay
+		return;
+	}
+
+	playModel.updateDirectorsNote(lineID, directorsNote, function(result) {
+        if (result.affectedRows > 0) {
+            res.status(200).send();
+            return;
+        }
+        res.status(500).send();
+	});
+}

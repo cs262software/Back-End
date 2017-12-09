@@ -122,23 +122,19 @@ exports.getLinesByPlayAndCharacter = function(playID, characterID, callback) {
 }
 
 /**
- * getNote gets the DirectorsNote of a given line
+ * getNoteByLineID gets the DirectorsNote of a given line
  *
  * @param: lineID
  * @param: callback (function)
  *
  * @return: list of lines and ids and notes
  */
-exports.getNote = function(lineID, callback) {
+exports.getNoteByLineID = function(lineID, callback) {
 	var sql = "SELECT DirectorNote FROM line WHERE LineID = ?";
 	var inserts = [lineID];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function(res) {
-		if (!res[0]) {
-			callback("");
-		} else {
-			callback(res[0].DirectorNote);
-		}
+		callback(res);
 	});
 }
 
@@ -151,12 +147,11 @@ exports.getNote = function(lineID, callback) {
  *
  * @return: Success? (bool)
  */
-exports.updateNote = function(lineID, note, callback) {
-	console.log( "note " + note + " lineID " + lineID);
+exports.updateDirectorsNote = function(lineID, note, callback) {
 	var sql = "UPDATE line SET DirectorNote = ? WHERE LineID = ?";
 	var inserts = [note, lineID];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function(res) {
-		callback(res.affectedRows == 1);
+		callback(res);
 	});
 }

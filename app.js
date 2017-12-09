@@ -60,8 +60,8 @@ app.set('view engine', 'jade');
 
 // server requirements
 app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
@@ -74,8 +74,8 @@ app.use(unless('/api/users', authenticationMiddleware));
 app.use('/api/users', users);
 app.use('/api/roles', roles);
 app.use('/api/files', files);
-app.use('/api/plays', plays);
 app.use('/api/characters', characters);
+app.use('/api/plays', plays);
 app.use('/api/blocking', blocking);
 app.use('/api/props', props);
 app.use('/api/notes', notes);
