@@ -46,7 +46,8 @@ exports.postFile = function( req, res ) {
 	}
 
 	const file = req.body.file;
-	fs.writeFile('./parsing/output/Romeo and Juliet.xml', file, (err) => {
+	const fileName = req.body.fileName;
+	fs.writeFile('./parsing/output/' + fileName, file, (err) => {
 		if (err) {
 			res.status(500).send();
 		}
