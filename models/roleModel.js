@@ -7,11 +7,11 @@
 // Initialize globals
 var mysql = require( 'mysql' );
 var db = require( './dbModule' );
-var modelPass = require( './modelPasswords' );
+var modelUser = require( './modelUser' );
 var conn  = mysql.createConnection( {
 	host     : 'localhost',
-	user     : 'theatreSuiteUser',
-	password : modelPass.fileModelPass,
+	user     : modelUser.username,
+	password : modelUser.password,
 	database : 'theatreappsuite',
 } );
 
@@ -29,9 +29,7 @@ exports.getRolePath = function( userID, playID, callback ) {
 	var inserts = [ userID, playID ];
     sql = mysql.format(sql, inserts);
     db.queryDB(conn, sql, function (res) {
-        
+
         callback(res ? res : "NO RESULTS FOUND\n");
     });
 }
-
-
