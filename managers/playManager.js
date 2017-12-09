@@ -83,46 +83,74 @@ exports.getLinesBySceneNum = function(req, res) {
 	let playID = req.params.PlayID;
 	let actNum = req.params.ActNum;
 	let sceneNum = req.params.SceneNum;
+    let characterID = req.query.CharacterID;
 
 	if (!playID || !actNum || !sceneNum) {
 		res.status(400).send({ error: "Missing PlayID, ActNum, or SceneNum as URL parameters"});
 	} else {
-		playModel.getLinesBySceneNum(playID, actNum, sceneNum, function(lines) {
-			if (lines.length > 0) {
+        if (typeof characterID === 'undefined') {
+    		playModel.getLinesBySceneNum(playID, actNum, sceneNum, function(lines) {
 				res.send(lines);
-			} else {
-				res.status(404).send({
-					error: "No lines found for given PlayID, ActNum, and SceneNum."
-				});
-			}
-		});
-	}
-}
+    		});
+        } else {
+            playModel.getLineNumsByCharacter(playID, actNum, sceneNum, characterID, function(result) {
+                if (result.length > 0) {
+                    // Extract the line numbers from the result set.
+                    let linenums = [];
+                    for (let i = 0; i < result.length; i++) {
+                        linenums.push(result[i].LineNum);
+                    }
 
-/**
- * getLineByPlayAndCharacter returns the lines and ids of lines associated with a play, and character
- *
- * @param: req.params.PlayID
- * @param: req.params.CharacterID
- *
- * @return: Lines and IDs in JSON obj
- */
-exports.getLinesByPlayAndCharacter = function(req, res) {
-	let playID = req.params.PlayID;
-	let characterID = req.params.CharacterID;
+                    // Get the lines directly before each of our character's lines.
+                    var promptlines = linenums.slice();
+                    for (let i = 0; i < promptlines.length; i++)
+                    {
+                        promptlines[i] = (promptlines[i] - 1);
+                    }
 
-	if (!playID || !characterID) {
-		res.status(400).send({ error: "Missing PlayID, or CharacterID as URL parameters"});
-	} else {
-		playModel.getLinesByPlayAndCharacter(playID, characterID, function(lines) {
-			if (lines.length > 0) {
-				res.send(lines);
-			} else {
-				res.status(404).send({
-					error: "No lines found for given PlayID, and CharacterID."
-				});
-			}
-		});
+                    // Formulate a SQL query to get the character's lines.
+                    var lineSQLstring = "SELECT l.LineID, 0 AS PromptLine, 1 AS CharacterLine FROM line l WHERE l.PlayID = ? AND l.ActNum = ? AND l.SceneNum = ? AND (";
+                    for (let i = 0; i < linenums.length; i++)
+                    {
+                        if (i != (linenums.length - 1)) //If this is not the last item in the array
+                        {
+                            lineSQLstring += "l.LineNum = " + linenums[i].toString() + " OR "; //Append an OR
+                        }
+                        else
+                        {
+                            lineSQLstring += "l.LineNum = " + linenums[i].toString() + ")"; //Close the paranthese
+                        }
+                    }
+
+                    // Forumlate a SQL query to get the prompt lines.
+                    var promptSQLstring = "SELECT l.LineID, 1 PromptLine, 0 AS CharacterLine FROM line l WHERE l.PlayID = ? AND l.ActNum = ? AND l.SceneNum = ? AND (";
+                    for (let i = 0; i < promptlines.length; i++)
+                    {
+                        if (i != (promptlines.length - 1)) //If this is not the last item in the array
+                        {
+                            promptSQLstring += "l.LineNum = " + promptlines[i].toString() + " OR "; //Append an OR
+                        }
+                        else
+                        {
+                            promptSQLstring += "l.LineNum = " + promptlines[i].toString() + ")"; //Close the paranthese
+                        }
+                    }
+
+                    // Add a union to get the query for the line stubs.
+                    var SQLstubs = lineSQLstring + " UNION " + promptSQLstring;
+
+                    // Retrieve lines with identifier stubs attached.
+                    playModel.getLinesWithStubs(playID, actNum, sceneNum, SQLstubs, function(finalResult) {
+                        res.send(finalResult);
+                    });
+                }
+                else {
+                    playModel.getLinesBySceneNum(playID, actNum, sceneNum, function(regularLines) {
+        				res.send(regularLines);
+            		});
+                }
+    		});
+        }
 	}
 }
 

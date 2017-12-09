@@ -82,7 +82,7 @@ exports.getScenesByActNum = function(playId, actNum, callback) {
 exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
 	var sql = (`
 		SELECT line.LineID AS LineID, line.LineNum AS LineNum, line.Text AS Text,
-		characterinfo.Name AS CharacterSpeaking
+		characterinfo.Name AS CharacterSpeaking, 0 AS PromptLine, 0 AS CharacterLine
 
 		FROM line
 		LEFT JOIN characterline ON (characterline.LineID = line.LineID AND characterline.Speaking = true)
@@ -97,27 +97,41 @@ exports.getLinesBySceneNum = function(playID, actNum, sceneNum, callback) {
 	});
 }
 
-/**
- * getLinesByPlayAndCharacter gets the lines and ids from a play given playID, and characterID
- *
- * @param: playID
- * @param: characterID
- * @param: callback (function)
- *
- * @return: list of lines and ids
- */
-exports.getLinesByPlayAndCharacter = function(playID, characterID, callback) {
+exports.getLineNumsByCharacter = function(playID, actNum, sceneNum, characterID, callback) {
 	var sql = (`
-		SELECT ActNum, SceneNum, Text
+		SELECT l.LineNum
 		FROM line l
-		INNER JOIN characterline cl ON l.LineID = cl.LineID
-		WHERE l.PlayID = ? AND cl.CharacterID = ?
-		ORDER BY l.ActNum, l.SceneNum
+		INNER JOIN characterline cl ON cl.LineID = l.LineID
+		WHERE cl.CharacterID = ?
+		AND cl.Speaking = 1
+		AND l.PlayID = ?
+		AND l.ActNum = ?
+		AND l.SceneNum = ?
 	`);
-	var inserts = [playID, characterID];
+	var inserts = [characterID, playID, actNum, sceneNum];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function(res) {
 		callback(res);
+	});
+}
+
+exports.getLinesWithStubs = function(playID, actNum, sceneNum, SQLstubs, callback) {
+	var SQLstart = "SELECT base.LineID,  base.LineNum, base.Text, base.CharacterSpeaking, stub.PromptLine, stub.CharacterLine FROM (";
+	var SQLbase = "SELECT line.LineID AS LineID, line.LineNum AS LineNum, line.Text AS Text, characterinfo.Name AS CharacterSpeaking FROM line LEFT JOIN characterline ON (characterline.LineID = line.LineID AND characterline.Speaking = true) LEFT JOIN characterinfo ON characterinfo.CharacterID = characterline.CharacterID WHERE line.PlayID = ? AND line.ActNum = ? AND line.SceneNum = ?";
+	var baseInserts = [playID, actNum, sceneNum];
+	SQLbase = mysql.format(SQLbase, baseInserts);
+
+	var SQLmiddle = ") AS base LEFT JOIN (";
+
+	var stubInserts = [playID, actNum, sceneNum, playID, actNum, sceneNum];
+	SQLstubs = mysql.format(SQLstubs, stubInserts);
+
+	var SQLend = ") AS stub ON base.LineID = stub.LineID;";
+
+	var SQLcomplete = SQLstart + SQLbase + SQLmiddle + SQLstubs + SQLend;
+
+	db.queryDB(conn, SQLcomplete, function(finalRes) {
+		callback(finalRes);
 	});
 }
 

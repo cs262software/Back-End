@@ -8,11 +8,6 @@ var express = require( 'express' );
 var router = express.Router();
 var playManager = require( '../managers/playManager' );
 
-router.get( '/:PlayID', function( req, res ) {
-	// Not yet implemented, or necessarily needed...
-	//playManager.getPlayByID( req, res )
-});
-
 router.get('/', function( req, res ) {
 	playManager.getAllPlays( req, res )
 });

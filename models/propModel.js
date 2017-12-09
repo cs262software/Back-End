@@ -65,8 +65,6 @@ exports.newPropMovement = function(lineID, propID, userID, movementDesc, callbac
 */
 
 exports.updatePropMovement = function(lineID, propID, movementDesc, newPropID, callback) {
-	//console.log("lineID " + lineID + " propID " + propID + " movementDesc " + movementDesc + " newPropID " + newPropID);
-	var sql = "UPDATE propmovement SET PropID = ?, MovementDescription = ? WHERE PropID = ? and LineID = ? ";
 	var inserts = [newPropID, movementDesc, propID, lineID];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function(res) {
@@ -75,7 +73,6 @@ exports.updatePropMovement = function(lineID, propID, movementDesc, newPropID, c
 }
 
 exports.updateNote = function(lineID, note, callback) {
-	console.log( "note " + note + " lineID " + lineID);
 	var sql = "UPDATE line SET DirectorNote = ? WHERE LineID = ?";
 	var inserts = [note, lineID];
 	sql = mysql.format(sql, inserts);
