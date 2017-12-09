@@ -12,7 +12,6 @@
     "cors": "^2.8.4",
     "debug": "~2.6.3",
     "express": "^4.16.2",
-    "ipaddr.js": "^1.5.4",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.1.0",
     "morgan": "~1.8.1",

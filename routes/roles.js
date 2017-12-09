@@ -7,7 +7,7 @@
 var express = require('express');
 var router = express.Router();
 
-var roleManager = require( '../controllers/roleManager' );
+var roleManager = require( '../managers/roleManager' );
 
 /* GET users roles */
 router.get('/', function(req, res, next) {
