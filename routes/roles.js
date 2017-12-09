@@ -9,7 +9,7 @@ var router = express.Router();
 
 var roleManager = require( '../managers/roleManager' );
 
-/* GET users listing. */
+/* GET users roles */
 router.get('/', function(req, res, next) {
 	//Call roles from controller
 	roleManager.getRoles ( req, res )
