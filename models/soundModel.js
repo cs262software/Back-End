@@ -1,0 +1,39 @@
+/*
+ * soundModel.js contains the function to interact with the DB and get the sound information
+ */
+
+'use strict';
+
+// Initialize globals
+var mysql = require( 'mysql' );
+var db = require( './dbModule' );
+var modelUser = require( './modelUser' );
+var conn  = mysql.createConnection( {
+	host     : 'localhost',
+	user     : modelUser.username,
+	password : modelUser.password,
+	database : 'theatreappsuite',
+} );
+
+/**
+ * getSoundsInfo searches the DB for the sounds info associated with the line provided
+ *
+ * @param: lineId, the LineID
+ * @param: callback, the callback function
+ *
+ * @return: the sound info for that line
+ */
+
+exports.getSoundsInfo = function(lineId, callback) {
+    var sql = "SELECT sound.SoundID, Name, Description, UserID, Note FROM sound INNER JOIN soundcue ON sound.SoundID = soundcue.SoundID WHERE soundcue.LineID = ?";
+    var inserts = [lineId];
+    sql = mysql.format(sql, inserts);
+
+    db.queryDB(conn, sql, function(res) {
+        if (!res[0] || res.length === 0) {
+            callback("-1");
+            return;
+        }
+        callback(res);
+    });
+}

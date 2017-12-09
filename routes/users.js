@@ -1,22 +1,19 @@
 /*
- * users.js Maintains routing information for user handling
+ * login.js Maintains the account system routing information
  */
 
 'use strict';
 
-var express = require('express');
+var express = require( 'express' );
 var router = express.Router();
+var userManager = require( '../managers/userManager' );
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-	// Normally you'd call a function (like I do in files.js)
-	res.json([{
-		id: 1,
-		username: "samsepi0l"
-	}, {
-		id: 2,
-		username: "D0loresH4ze"
-	}]);
+router.post('/create', function(req, res, next) {
+    userManager.createLogin(req, res);
+});
+
+router.post('/login', function(req, res, next) {
+    userManager.login(req, res);
 });
 
 module.exports = router;
