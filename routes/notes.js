@@ -19,4 +19,10 @@ router.post( '/update', function( req, res ) {
 	notesManager.updateNotes( req, res );
 });
 
+// This post requires body to look like
+// { LineID: #, note: "XXX" }
+router.put( '/update', function(req, res) {
+	notesManager.updateNotes(req, res);
+});
+
 module.exports = router;

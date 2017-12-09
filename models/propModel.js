@@ -20,15 +20,66 @@ var conn  = mysql.createConnection( {
  *
  * @param: lineID
  * @param: callback
- * 
+ *
  * @return: list of props
  */
 exports.getProps = function(lineID, callback) {
-	var sql = "SELECT prop.PropID, Name, Description, UserID, MovementDescription FROM prop INNER JOIN propmovement ON prop.PropID = propmovement.PropID where propmovement.LineID = ?;"
+	var sql = "SELECT prop.PropID, Name, Description, UserID, MovementDescription, LineID FROM prop INNER JOIN propmovement ON prop.PropID = propmovement.PropID where propmovement.LineID = ?;"
 	var inserts = [lineID];
 	sql = mysql.format(sql, inserts);
 
 	db.queryDB( conn, sql, function(res) {
 		callback(res);
+	});
+}
+
+
+/*
+* newPropMovement creates propmovement row for a given line ID
+* @param: propID
+* @param: lineID
+* @param: userID
+* @param: movementDesc
+*
+* @return: Success? (bool)
+*/
+exports.newPropMovement = function(lineID, propID, userID, movementDesc, callback) {
+	var sql = "INSERT INTO `theatreappsuite`.`propmovement` (`PropID`, `LineID`, `UserID`, `MovementDescription`) VALUES (?, ?, ?, ?);"
+	var inserts = [propID, lineID, null, movementDesc];
+	sql = mysql.format(sql, inserts);
+	db.queryDB (conn, sql, function (res) {
+		callback(res.affectedRows == 1);
+	});
+}
+
+
+/*
+* updatePropMovement updates prop and propmovement tables for a given line
+* @param: lineID
+* @param: prop
+* @param: movementDesc
+* @param: newPropID
+* @param: callback (function)
+*
+* @return:
+*/
+
+exports.updatePropMovement = function(lineID, propID, movementDesc, newPropID, callback) {
+	//console.log("lineID " + lineID + " propID " + propID + " movementDesc " + movementDesc + " newPropID " + newPropID);
+	var sql = "UPDATE propmovement SET PropID = ?, MovementDescription = ? WHERE PropID = ? and LineID = ? ";
+	var inserts = [newPropID, movementDesc, propID, lineID];
+	sql = mysql.format(sql, inserts);
+	db.queryDB(conn, sql, function(res) {
+		callback(res.affectedRows);
+	});
+}
+
+exports.updateNote = function(lineID, note, callback) {
+	console.log( "note " + note + " lineID " + lineID);
+	var sql = "UPDATE line SET DirectorNote = ? WHERE LineID = ?";
+	var inserts = [note, lineID];
+	sql = mysql.format(sql, inserts);
+	db.queryDB(conn, sql, function(res) {
+		callback(res.affectedRows == 1);
 	});
 }

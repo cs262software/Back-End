@@ -1,5 +1,4 @@
-
-/*
+/**
  * blockingModel.js contains the blocking-related functions that interact with the DB
  */
 
@@ -8,7 +7,6 @@
 // Initialize globals
 var mysql = require('mysql');
 var db = require('./dbModule');
-//var modelPass = require( './modelPasswords' );
 var modelUser = require('./modelUser');
 
 var conn = mysql.createConnection({
@@ -25,7 +23,7 @@ var conn = mysql.createConnection({
  *
  * @param: callback, the callback function
  *
- * @return: blocking...
+ * @return: blocking, blocking instructions in database associated with lid (LineID)
  */
 exports.getBlockingByLineID = function (lid, callback) {
 
@@ -71,11 +69,15 @@ exports.getBlockingByLineID = function (lid, callback) {
 	});
 }
 
-/*
+/**
+ * createBlocking
+ * 
  * createBlocking both updates/creates blocking instruction depending
  * on whether or not they exist in the db
  *
- * @param: lid, blockingUpdateArray
+ * @param: lid, the line id
+ * 
+ * @param: currDataSet, holds current data (object) being passed from blockingUpdateArray
  *
  * @param: callback, the callback function
  *
@@ -90,8 +92,8 @@ exports.createBlocking = function (lid, currDataSet, callback) {
 	var inserts = [charID, lid];
 	sql = mysql.format(sql, inserts);
 	db.queryDB(conn, sql, function (res) {
-		if( res.length == 0 ) {
-			console.log("No LID");
+		// case: blocking instructions don't already exist for LineID, character not already associated with line in db
+		if( res.length == 0) {
 			var sql1 = "INSERT INTO blocking (DestX, DestY, DestZ, OriginX, OriginY, OriginZ) VALUES (?,?,?,0,0,0);"
 			var inserts1 = [destx, desty, destz];
 			sql1 = mysql.format(sql1, inserts1);
@@ -106,21 +108,22 @@ exports.createBlocking = function (lid, currDataSet, callback) {
 			});
 		}
 		else {
-			if ( res[0].BlockingID == null ) {
-				console.log("LID, NO BID");
-				var sql3 = "INSERT INTO blocking (DestX, DestY, DestZ, OriginX, OriginY, OriginZ) VALUES (?,?,?,0,0,0);"
-				var inserts3 = [destx, desty, destz];
-				sql3 = mysql.format(sql3, inserts3);
-				db.queryDB(conn, sql3, function (res3) {
-					var blockingID = res3.insertId;
-					var sql4 = "UPDATE characterline SET BlockingID = ? WHERE CharacterID = ? AND LineID = ?;"
-					var insert4 = [blockingID, charID, lid];
-					sql4 = mysql.format(sql4, insert4);
-					db.queryDB(conn, sql4, function (res4) {
-						callback(res4);
+			// case: character already associated with line, but has no (old) blocking instruction
+			if (res[0].BlockingID == null) {
+				var sql1 = "INSERT INTO blocking (DestX, DestY, DestZ, OriginX, OriginY, OriginZ) VALUES (?,?,?,0,0,0);"
+				var inserts1 = [destx, desty, destz];
+				sql1 = mysql.format(sql1, inserts1);
+				db.queryDB(conn, sql1, function (res1) {
+					var blockingID = res1.insertId;
+					var sql2 = "UPDATE characterline SET BlockingID = ? WHERE CharacterID = ? AND LineID = ?;"
+					var insert2 = [blockingID, charID, lid];
+					sql2 = mysql.format(sql2, insert2);
+					db.queryDB(conn, sql2, function (res2) {
+						callback(res2);
 					});
 				});
 			}
+			// case: character already associated with line, has (old) blocking instructions
 			else {
 				console.log("LID AND BID");
 				var sql5 = "UPDATE blocking SET DestX = ?, DestY = ?, DestZ = ? WHERE BlockingID = ?;"

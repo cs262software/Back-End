@@ -40,7 +40,7 @@ exports.getAllPlays = function(callback) {
  */
 
 exports.getActsByPlayID = function(playId, callback) {
-	var sql = "SELECT DISTINCT ActNum FROM Line WHERE PlayID = ? ORDER BY ActNum ASC;"
+	var sql = "SELECT DISTINCT ActNum FROM line WHERE PlayID = ? ORDER BY ActNum ASC;"
 	var inserts = [playId];
 	sql = mysql.format(sql, inserts);
 
@@ -60,7 +60,7 @@ exports.getActsByPlayID = function(playId, callback) {
  */
 
 exports.getScenesByActNum = function(playId, actNum, callback) {
-	var sql = "SELECT DISTINCT SceneNum FROM Line WHERE PlayID = ? AND ActNum = ? ORDER BY SceneNum ASC;"
+	var sql = "SELECT DISTINCT SceneNum FROM line WHERE PlayID = ? AND ActNum = ? ORDER BY SceneNum ASC;"
 	var inserts = [playId, actNum];
 	sql = mysql.format(sql, inserts);
 

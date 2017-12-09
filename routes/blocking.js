@@ -13,7 +13,7 @@ router.get( '/:LineID', function( req, res, next ) {
 	blockingManager.getBlockingByLineID( req, res );
 });
 
-// create blocking instruction
+// create (and/or update) blocking instructions
 router.post( '/:LineID', function( req, res, next ) {
 	blockingManager.createBlocking( req, res );
 });

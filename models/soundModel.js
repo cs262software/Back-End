@@ -31,15 +31,9 @@ exports.getSoundsInfo = function(lineId, callback) {
 
     db.queryDB(conn, sql, function(res) {
         if (!res[0] || res.length === 0) {
-            callback("-1", "-1", "-1", "-1", "-1");
+            callback("-1");
             return;
         }
-        var soundId = res[0].SoundID;
-        var name = res[0].Name;
-        var description = res[0].Description;
-        var userId = res[0].UserID;
-        var note = res[0].Note;
-
-        callback(soundId, name, description, userId, note);
+        callback(res);
     });
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * blockingController.js contains the functions related to blocking tasks
  */
 
@@ -7,13 +7,18 @@
 // Initialize globals
 var blockingModel = require('../models/blockingModel');
 
-/*
- * getBlocking returns the blocking instructions for given lineid
+/**
+ * getBlockingByLineID
  *
- * @param: req.line.LineID, the line id
+ * returns the blocking instructions for given LineID, as well as the
+ * last instruction for each character blocked (but not necessary changing
+ * their blocking) before specified line
  *
- * @return: a json object whose keys contain arrays of values corresponding to all
- *			blocking instructions and info for all characters associated with a given lineid
+ * @param: req.params.LineID, the line id
+ *
+ * @return: blocking, (json) all instructions in db blocking table associated with given LineID
+ * 				JSON keys:
+ * 					LineID, CharacterID, Name, OriginX, OriginY, OriginZ, DestX, DestY, DestZ, MovementType, Orientation
  */
 
 exports.getBlockingByLineID = function( req, res ) {
@@ -28,12 +33,15 @@ exports.getBlockingByLineID = function( req, res ) {
 }
 
 
-/*
- * updateBlocking updates blocking instructions for each instruction (associated with a character) for given lineid
+/**
+ * createBlocking
  *
- * @params...
+ * creates and/or updates blocking instructions in database depending on
+ * whether an instruction already exists for given characters and given line
  *
+ * @param: req.params.LineID, the line id
  *
+ * @param: req.body.blockingUpdateArray, array containing updates/new blocking instructions
  *
  */
 
@@ -51,8 +59,16 @@ exports.createBlocking = function( req, res ) {
 	for (let i=0; i<blockingUpdateArray.length; i++) {
 		let currDataSet = blockingUpdateArray[i];
 		blockingModel.createBlocking(lid, currDataSet, function(result) {
-			//console.log(result);
+			if (result.affectedRow > 0) {
+				if (i == (blockingUpdateArray.length - 1)) {
+					res.status(200).send();
+				}
+				// Else continue...
+			}
+			else {
+				res.status(500).send();
+			}
 		});
 	}
-	res.status(200).send();
+
 }
